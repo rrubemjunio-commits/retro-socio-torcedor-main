@@ -58,9 +58,9 @@
         @forelse($categorias as $categoria)
             <div class="col-6 col-lg-3">
                 <a class="categoria-destaque h-100" href="{{ route('produtos.index', ['categoria' => $categoria->id]) }}" target="_blank" rel="noopener noreferrer">
-                    <span class="categoria-icone" aria-hidden="true">{{ $categoria->icone ?: '⚽' }}</span>
+                    <span class="categoria-icone" aria-hidden="true"><i class="bi bi-{{ $categoria->iconeBootstrap() }}"></i></span>
                     <span class="categoria-nome">{{ $categoria->nome }}</span>
-                    <span class="categoria-acao">Ver opções <span aria-hidden="true">↗</span></span>
+                    <span class="categoria-acao">Ver opções <i class="bi bi-arrow-up-right" aria-hidden="true"></i></span>
                 </a>
             </div>
         @empty
@@ -73,9 +73,9 @@
 <section class="blocos" id="beneficios">
     <article class="bloco-destaque">
         <button class="bloco-gatilho" type="button" data-bs-toggle="collapse" data-bs-target="#opcoes-socio" aria-expanded="false" aria-controls="opcoes-socio">
-            <span class="icone">🎟</span>
+            <span class="icone"><i class="bi bi-ticket-perforated" aria-hidden="true"></i></span>
             <span class="bloco-titulo">Seja sócio</span>
-            <span class="bloco-seta" aria-hidden="true">⌄</span>
+            <i class="bi bi-chevron-down bloco-seta" aria-hidden="true"></i>
         </button>
         <div class="collapse" id="opcoes-socio">
             <div class="bloco-opcoes">
@@ -86,9 +86,9 @@
     </article>
     <article class="bloco-destaque">
         <button class="bloco-gatilho" type="button" data-bs-toggle="collapse" data-bs-target="#opcoes-produtos" aria-expanded="false" aria-controls="opcoes-produtos">
-            <span class="icone">⭐</span>
+            <span class="icone"><i class="bi bi-bag" aria-hidden="true"></i></span>
             <span class="bloco-titulo">Produtos e benefícios</span>
-            <span class="bloco-seta" aria-hidden="true">⌄</span>
+            <i class="bi bi-chevron-down bloco-seta" aria-hidden="true"></i>
         </button>
         <div class="collapse" id="opcoes-produtos">
             <div class="bloco-opcoes">
@@ -99,9 +99,9 @@
     </article>
     <article class="bloco-destaque" id="jogos">
         <button class="bloco-gatilho" type="button" data-bs-toggle="collapse" data-bs-target="#opcoes-socios" aria-expanded="false" aria-controls="opcoes-socios">
-            <span class="icone">⚽</span>
+            <span class="icone"><i class="bi bi-people" aria-hidden="true"></i></span>
             <span class="bloco-titulo">Sócios cadastrados</span>
-            <span class="bloco-seta" aria-hidden="true">⌄</span>
+            <i class="bi bi-chevron-down bloco-seta" aria-hidden="true"></i>
         </button>
         <div class="collapse" id="opcoes-socios">
             <div class="bloco-opcoes">
