@@ -18,8 +18,13 @@
         </div>
         <div class="mb-3">
             <label for="icone" class="form-label">Ícone (opcional)</label>
-            <input id="icone" name="icone" class="form-control" value="{{ old('icone') }}" maxlength="60" placeholder="Ex.: tag-fill, bag ou trophy">
-            <small class="text-muted">Informe o nome do ícone Bootstrap (sem o prefixo “bi bi-”).</small>
+            <select id="icone" name="icone" class="form-select">
+                <option value="">Ícone padrão</option>
+                @foreach(\App\Models\Categoria::iconesBootstrap() as $nome => $rotulo)
+                    <option value="{{ $nome }}" @selected(old('icone') === $nome)>{{ $rotulo }}</option>
+                @endforeach
+            </select>
+            <small class="text-muted">Escolha um ícone Bootstrap para representar a categoria.</small>
         </div>
         <div class="d-flex flex-wrap gap-2 mt-4">
             <button class="btn-amarelo" type="submit">SALVAR CATEGORIA</button>

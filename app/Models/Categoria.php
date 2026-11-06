@@ -13,6 +13,24 @@ class Categoria extends Model
 
     protected $table = 'categorias';
 
+    public static function iconesBootstrap(): array
+    {
+        return [
+            'tag' => 'Etiqueta',
+            'bag' => 'Bolsa',
+            'gift' => 'Presente',
+            'ticket-perforated' => 'Ingresso',
+            'star' => 'Destaque',
+            'heart' => 'Coração',
+            'collection' => 'Coleção',
+        ];
+    }
+
+    public function iconeBootstrap(): string
+    {
+        return array_key_exists($this->icone, self::iconesBootstrap()) ? $this->icone : 'tag';
+    }
+
     protected $fillable = [
         'empresa_id',
         'nome',

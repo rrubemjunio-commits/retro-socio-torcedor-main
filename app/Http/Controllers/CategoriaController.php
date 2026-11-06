@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CategoriaController extends Controller
 {
@@ -23,11 +24,11 @@ class CategoriaController extends Controller
     {
         $dados = $request->validate([
             'nome' => ['required', 'string', 'max:100'],
-            'icone' => ['nullable', 'string', 'max:60', 'regex:/\A[a-z0-9]+(?:-[a-z0-9]+)*\z/'],
+            'icone' => ['nullable', Rule::in(array_keys(Categoria::iconesBootstrap()))],
         ], [
             'nome.required' => 'Informe o nome da categoria.',
             'nome.max' => 'O nome da categoria deve ter até 100 caracteres.',
-            'icone.regex' => 'Informe o nome do ícone Bootstrap, como tag-fill ou trophy.',
+            'icone.in' => 'Escolha um dos ícones disponíveis.',
         ]);
 
         Categoria::create($dados);
