@@ -59,12 +59,14 @@
 .categoria-destaque{min-height:152px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:8px;padding:20px;text-decoration:none;background:linear-gradient(145deg,#f8f9fc,#eef3fb);border:1px solid #e3eaf5;border-radius:10px;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
 .categoria-destaque:hover{transform:translateY(-4px);border-color:#b9c9e5;box-shadow:0 10px 22px #14213d16}
 .categoria-icone{font-size:30px;line-height:1}
+.categoria-icone i{color:#08449f}
 .categoria-nome{color:#18243a;font-size:16px;font-weight:800}
 .categoria-acao{color:#08449f;font-size:13px;font-weight:800}
 .bloco-destaque{transition:transform .2s ease,box-shadow .2s ease}
 .bloco-destaque:hover{transform:translateY(-4px);box-shadow:0 10px 24px #14213d16}
 .bloco-gatilho{width:100%;display:grid;grid-template-columns:42px 1fr auto;align-items:center;gap:10px;padding:0;text-align:left;color:#18243a;background:transparent;border:0}
 .bloco-gatilho .icone{grid-row:1}
+.bloco-gatilho .icone i{color:#08449f}
 .bloco-titulo{font-size:20px;font-weight:800}
 .bloco-seta{color:#08449f;font-size:24px;line-height:1;transition:transform .2s ease}
 .bloco-gatilho[aria-expanded="true"] .bloco-seta{transform:rotate(180deg)}
@@ -76,6 +78,8 @@
 .filtro-categoria{display:inline-flex;align-items:center;padding:8px 14px;color:#17376b;background:#f4f6fa;border:1px solid #dfe5ef;border-radius:30px;font-size:13px;font-weight:700;text-decoration:none;transition:background .2s ease,color .2s ease,transform .2s ease}
 .filtro-categoria:hover{transform:translateY(-2px);background:#e8edf6}
 .filtro-categoria.active{color:#fff;background:#08449f;border-color:#08449f}
+.menu a i{display:inline-block;width:22px;margin-right:6px;text-align:center}
+.hamburguer i{display:block}
 @media(max-width:760px){.hero{min-height:390px}.categoria-destaque{min-height:135px;padding:15px}.secao-cabecalho h2{font-size:23px}}
 @media(prefers-reduced-motion:reduce){.categoria-destaque,.bloco-destaque,.filtro-categoria,.bloco-seta{transition:none}.categoria-destaque:hover,.bloco-destaque:hover,.filtro-categoria:hover{transform:none}}
 
@@ -94,6 +98,36 @@
 .planos-intro h1{margin:10px 0;font-size:clamp(30px,4vw,44px);font-weight:800}
 .planos-intro>p{margin:0 auto 12px;color:#647087;font-size:17px}
 .aviso-planos{display:inline-block;padding:7px 12px;color:#684300;background:#fff1ce;border-radius:20px;font-size:12px;font-weight:700}
+
+.marca{display:inline-flex;align-items:center;gap:10px}
+.marca-escudo{width:44px;height:44px;object-fit:contain}
+.marca .marca-nome{font-size:25px;font-weight:800;letter-spacing:.3px}
+@media(max-width:760px){.links-topo{flex-wrap:wrap;justify-content:flex-end}.marca-escudo{width:38px;height:38px}.marca .marca-nome{font-size:21px}.marca .marca-nome span{display:block;font-size:11px}}
+
+.ingressos-pagina{max-width:1000px;margin:auto}
+.ingressos-cabecalho{margin:8px 0 22px}
+.ingressos-cabecalho h1{margin:8px 0;font-size:30px;font-weight:800}
+.ingressos-cabecalho>p{color:#c3cee0}
+.ingressos-lista{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.ingresso-jogo{padding:20px;color:#f5f7fc;background:rgba(8,27,65,.93);border:1px solid #d5aa5270;border-radius:8px}
+.ingresso-confronto{display:flex;align-items:center;justify-content:center;gap:20px;margin:18px 0}
+.ingresso-time{display:flex;flex-direction:column;align-items:center;gap:8px}
+.ingresso-escudo{width:48px;height:48px;object-fit:contain}
+.ingresso-escudo-adversario{font-size:42px}
+.ingresso-escudo-nautico{color:#e94254}
+.ingresso-escudo-santa-cruz{color:#f5f7fc;text-shadow:-2px 0 #e94254,2px 0 #f5f7fc,0 2px #e94254}
+.ingresso-x{color:#f5bd48}
+.ingresso-detalhe{margin:8px 0;color:#d1daea;font-size:13px}
+.ingresso-detalhe i{margin-right:5px;color:#f5bd48}
+.ingresso-precos{display:flex;justify-content:center;gap:32px;margin-top:16px;padding-top:14px;border-top:1px solid #ffffff24;text-align:center}
+.ingresso-precos div{display:grid;gap:4px}
+.ingresso-precos span{color:#c3cee0;font-size:12px}
+.ingresso-precos strong{color:#ffd36b}
+.ingresso-jogo .ingresso-comprar.btn-warning{transition:background-color .2s ease,border-color .2s ease,color .2s ease}
+.ingresso-jogo .ingresso-comprar.btn-warning:hover,.ingresso-jogo .ingresso-comprar.btn-warning:focus-visible{color:#17233b;background-color:#ffdc73;border-color:#ffdc73}
+@media(prefers-reduced-motion:reduce){.ingresso-jogo .ingresso-comprar.btn-warning{transition:none}}
+.ingressos-nota{margin:12px 0 0;color:#aab6cb;font-size:11px;text-align:right}
+@media(max-width:650px){.ingressos-lista{grid-template-columns:1fr}}
 .planos-grade{align-items:stretch}
 .plano-card{overflow:hidden;display:flex;flex-direction:column;background:#fff;border:1px solid #e1e7f0;border-radius:14px;box-shadow:0 8px 26px #14213d10;transition:transform .2s ease,box-shadow .2s ease}
 .plano-card:hover{transform:translateY(-5px);box-shadow:0 14px 32px #14213d1c}
@@ -119,3 +153,68 @@
 .login-formulario{max-width:560px}
 @media(max-width:991px){.plano-card-topo{min-height:0}.plano-card-topo>p{min-height:0}}
 @media(prefers-reduced-motion:reduce){.plano-card{transition:none}.plano-card:hover{transform:none}}
+
+/* Identidade visual Retrô FC */
+body{background:#071735;color:#f5f7fc}
+.topo{position:relative;z-index:2;background:rgba(5,20,53,.96);box-shadow:0 2px 18px #02091880}
+.barra{background:#0b1c42;color:#fff;border-top:1px solid #ffffff12;border-bottom:1px solid #ffffff18}
+.hamburguer{color:#f5b52e}
+.links-topo a,.links-topo .usuario-logado,.links-topo .link-topo-botao{color:#f5f7fc}
+.estrutura{background:linear-gradient(180deg,rgba(5,18,47,.42),rgba(4,17,45,.62)),url('/images/plano%20de%20fundo.jpg') center 42%/cover fixed}
+.menu{background:rgba(5,19,51,.88);border-right:1px solid #e0ad3b55}
+.menu a:hover{color:#ffc13d;background:#ffffff12}
+.conteudo{background:transparent;color:#f5f7fc}
+footer{background:#061633;color:#dce8ff;border-top:1px solid #e0ad3b66}
+.etiqueta{color:#f4bd48}
+.formulario,.painel-lista,.blocos article,.visao-geral{color:#f5f7fc;background:rgba(7,24,59,.88);border:1px solid #d5aa5266;box-shadow:0 12px 32px #02091866}
+.formulario h1,.painel-lista h1,.blocos h2,.bloco-titulo,.visao-cabecalho h2{color:#fff}
+.formulario p,.blocos p,.text-muted,.visao-cabecalho p,.resumo-card span,.item-recente span{color:#c3cee0!important}
+.form-label,.form-check-label{color:#f2f5fb}
+.form-control,.form-select{color:#fff;background-color:#091a3d;border-color:#63718c}
+.form-control::placeholder{color:#aab6cb}
+.form-control:focus,.form-select:focus{color:#fff;background-color:#0b2049;border-color:#f5bd48;box-shadow:0 0 0 .2rem #f5bd4830}
+.form-select option{color:#fff;background:#091a3d}
+.btn-secundario{color:#f5f7fc;background:#142b58;border-color:#d5aa5280}
+.btn-secundario:hover{color:#fff;background:#1a376d}
+.link-bloco,.resumo-card a,.itens-recentes-cabecalho a{color:#ffd36b}
+.produto-card,.resumo-card{color:#f5f7fc;background:rgba(8,27,65,.93);border-color:#d5aa5270;box-shadow:0 10px 28px #02091866}
+.produto-conteudo h2{color:#fff}
+.produto-conteudo p{color:#c3cee0}
+.produto-valor{color:#ffd36b}
+.produto-categoria{color:#deebff;background:#18386d}
+.produto-destaque{color:#fff0bf;background:#775519}
+.catalogo-vazio,.categorias-vazias{color:#f5f7fc;background:rgba(8,27,65,.78);border-color:#d5aa5270}
+.catalogo-vazio p{color:#c3cee0}
+.table{--bs-table-color:#f5f7fc;--bs-table-bg:transparent;--bs-table-striped-color:#f5f7fc;--bs-table-striped-bg:#ffffff0b;--bs-table-border-color:#ffffff20}
+.table thead th{color:#ffd36b}
+.aviso-planos{color:#fce7ac;background:#6c511b;border:1px solid #f0bf4b66}
+.planos-intro h1{color:#fff;text-shadow:0 3px 16px #020918}
+.planos-intro>p{color:#d1daea}
+.plano-card{position:relative;color:#fff;background:rgba(5,20,53,.94);border:2px solid #a4774d;border-radius:16px;box-shadow:0 12px 32px #02091888;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.plano-card:hover{transform:translateY(-5px);box-shadow:0 16px 38px #020918aa}
+.plano-card-topo{min-height:230px;background:linear-gradient(155deg,#102858,#071735)}
+.plano-bronze{border-color:#a4774d}
+.plano-bronze .plano-card-topo{background:linear-gradient(155deg,#102858,#071735)}
+.plano-prata{border-color:#e0e7f2;box-shadow:0 0 0 1px #e0e7f24d,0 0 24px #dce8ff55,0 12px 32px #02091888}
+.plano-prata .plano-card-topo{background:linear-gradient(155deg,#314a72,#122447)}
+.plano-ouro{border-color:#e4ad27}
+.plano-ouro .plano-card-topo{background:linear-gradient(155deg,#f2b51e,#a96b08)}
+.plano-card-topo h2{color:#fff}
+.plano-card-topo>p,.plano-preco span{color:#e2e8f2}
+.plano-selo{color:#f8faff;background:#ffffff20;border-color:#ffffff55}
+.plano-card-conteudo{background:linear-gradient(180deg,rgba(5,19,50,.76),rgba(6,23,56,.98))}
+.plano-card-conteudo h3{color:#f8faff}
+.plano-beneficios li{color:#e0e7f2}
+.plano-beneficios li:before{content:"";top:.32em;width:15px;height:15px;border-radius:50%;background:#f2b52e;box-shadow:inset 0 0 0 4px #f2b52e;outline:1px solid #f2b52e}
+.plano-beneficios li:after{content:"";position:absolute;left:5px;top:.62em;width:5px;height:3px;border-left:1.5px solid #14213d;border-bottom:1.5px solid #14213d;transform:rotate(-45deg)}
+.plano-resumo{color:#c3cee0}
+.plano-escolher{align-self:stretch;text-align:center;border-radius:9px}
+.plano-bronze .plano-escolher{color:#f5f7fc;background:transparent;border:1px solid #ba956f}
+.plano-prata .plano-escolher{color:#102044;background:#f5f7fc}
+.plano-ouro .plano-escolher{color:#18243a;background:#f2b51e}
+.plano-bronze .plano-escolher:hover{color:#fff;background:#25385a}
+.plano-prata .plano-escolher:hover{background:#dce5f2}
+.plano-ouro .plano-escolher:hover{background:#ffd05c}
+.cadastro-socio{max-width:1000px}
+.login-formulario{color:#f5f7fc}
+@media(max-width:760px){.estrutura{background-attachment:scroll}.menu{border-right:0;border-bottom:1px solid #e0ad3b55}.links-topo{gap:10px}.links-topo a{color:#fff}.plano-card-topo{min-height:0}}

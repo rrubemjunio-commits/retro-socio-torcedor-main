@@ -46,7 +46,7 @@
         @empty
             <div class="col-12">
                 <div class="catalogo-vazio text-center">
-                    <div class="icone">⚽</div>
+                    <div class="icone"><i class="bi bi-trophy" aria-hidden="true"></i></div>
                     <h2>Nenhum produto cadastrado</h2>
                     <p>Novos produtos e benefícios estarão disponíveis em breve.</p>
                 </div>

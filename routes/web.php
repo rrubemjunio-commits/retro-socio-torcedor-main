@@ -13,6 +13,30 @@ Route::get('/', function () {
     return view('home', compact('categorias'));
 })->name('home');
 
+Route::view('/jogos', 'jogos.index')->name('jogos.index');
+Route::get('/ingressos', function () {
+    $jogos = [
+        [
+            'adversario' => 'Náutico',
+            'data' => '28 de novembro de 2026',
+            'horario' => '16h',
+            'estadio' => 'Arena de Pernambuco',
+            'inteira' => 40,
+            'meia' => 20,
+        ],
+        [
+            'adversario' => 'Santa Cruz',
+            'data' => '12 de dezembro de 2026',
+            'horario' => '18h30',
+            'estadio' => 'Arena de Pernambuco',
+            'inteira' => 50,
+            'meia' => 25,
+        ],
+    ];
+
+    return view('ingressos.index', compact('jogos'));
+})->name('ingressos.index');
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
     Route::post('/login', [LoginController::class, 'store'])

@@ -19,6 +19,13 @@ class Categoria extends Model
         'icone',
     ];
 
+    public function getIconeBootstrapAttribute(): string
+    {
+        return preg_match('/\A[a-z0-9]+(?:-[a-z0-9]+)*\z/', (string) $this->icone) === 1
+            ? $this->icone
+            : 'tag-fill';
+    }
+
     public function empresa(): BelongsTo
     {
         return $this->belongsTo(Empresa::class);

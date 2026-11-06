@@ -21,7 +21,7 @@
             <tbody>
                 @forelse($categorias as $categoria)
                     <tr>
-                        <td>{{ $categoria->icone ?: '—' }}</td>
+                        <td><i class="bi bi-{{ $categoria->icone_bootstrap }}" aria-hidden="true"></i></td>
                         <td>{{ $categoria->nome }}</td>
                         <td>{{ $categoria->produtos_count }}</td>
                     </tr>
