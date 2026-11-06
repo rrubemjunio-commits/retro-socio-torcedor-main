@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Produto;
+use App\Models\Socio;
 use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
@@ -11,9 +12,11 @@ class ProdutoController extends Controller
     public function index(Request $request)
     {
         $dados = $request->validate([
+            'aba' => ['sometimes', 'in:consumo,cupons'],
             'categoria' => ['sometimes', 'integer', 'exists:categorias,id'],
         ]);
 
+        $abaSelecionada = $dados['aba'] ?? 'consumo';
         $categoriaSelecionada = $dados['categoria'] ?? null;
         $categorias = Categoria::orderBy('nome')->get();
         $consulta = Produto::with('categoria')
@@ -21,13 +24,38 @@ class ProdutoController extends Controller
             ->orderByDesc('destaque')
             ->orderBy('nome');
 
-        if ($categoriaSelecionada !== null) {
+        if ($abaSelecionada === 'consumo' && $categoriaSelecionada !== null) {
             $consulta->where('categoria_id', $categoriaSelecionada);
         }
 
         $produtos = $consulta->get();
+        $socioAutenticado = auth()->check()
+            && Socio::where('email', auth()->user()->email)->exists();
+        $cupons = [
+            [
+                'titulo' => 'Bebida gelada',
+                'descricao' => 'Pra refrescar a torcida.',
+                'desconto' => '10% OFF',
+                'codigo' => 'BEBIDA10',
+                'validade' => 'Até acabar!',
+            ],
+            [
+                'titulo' => 'Combo da torcida',
+                'descricao' => 'Lanche + acompanhamento com descontão.',
+                'desconto' => 'R$ 8 OFF',
+                'codigo' => 'COMBO8',
+                'validade' => 'Até acabar!',
+            ],
+        ];
 
-        return view('produtos.index', compact('produtos', 'categorias', 'categoriaSelecionada'));
+        return view('produtos.index', compact(
+            'produtos',
+            'categorias',
+            'categoriaSelecionada',
+            'abaSelecionada',
+            'socioAutenticado',
+            'cupons'
+        ));
     }
 
     public function create()

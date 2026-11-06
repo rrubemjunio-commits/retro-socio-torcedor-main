@@ -18,6 +18,9 @@ class Categoria extends Model
         return [
             'tag' => 'Etiqueta',
             'bag' => 'Bolsa',
+            'basket2' => 'Acompanhamentos',
+            'cup-straw' => 'Bebidas',
+            'egg-fried' => 'Lanches',
             'gift' => 'Presente',
             'ticket-perforated' => 'Ingresso',
             'star' => 'Destaque',
