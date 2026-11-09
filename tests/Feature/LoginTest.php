@@ -39,6 +39,22 @@ class LoginTest extends TestCase
             ->assertSee(route('login.store'), false);
     }
 
+    public function test_validation_errors_are_rendered_without_view_conditionals(): void
+    {
+        $this->from(route('login'))
+            ->post(route('login.store'), [
+                'email' => 'email-invalido',
+                'password' => '',
+            ])
+            ->assertRedirect(route('login'))
+            ->assertSessionHasErrors(['email', 'password']);
+
+        $this->get(route('login'))
+            ->assertOk()
+            ->assertSee('Informe um e-mail válido.')
+            ->assertSee('Informe sua senha.');
+    }
+
     public function test_active_user_can_log_in_and_log_out(): void
     {
         $user = User::create([

@@ -6,11 +6,9 @@
     <h1 id="titulo-login">Entrar na sua conta</h1>
     <p>Acesse sua conta para continuar.</p>
 
-    @if($errors->any())
-        <div class="alert alert-danger" role="alert">
-            <ul class="mb-0">@foreach($errors->all() as $erro)<li>{{ $erro }}</li>@endforeach</ul>
-        </div>
-    @endif
+    <div class="alert alert-danger {{ $validationAlertsClass }}" role="alert">
+        <ul class="mb-0">@foreach($errors->all() as $erro)<li>{{ $erro }}</li>@endforeach</ul>
+    </div>
 
     <form method="POST" action="{{ route('login.store') }}">
         @csrf

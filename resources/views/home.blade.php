@@ -55,7 +55,7 @@
         </div>
     </div>
     <div class="row g-3">
-        @forelse($categorias as $categoria)
+        @foreach($categorias as $categoria)
             <div class="col-6 col-lg-3">
                 <a class="categoria-destaque h-100" href="{{ route('produtos.index', ['categoria' => $categoria->id]) }}" target="_blank" rel="noopener noreferrer">
                     <span class="categoria-icone" aria-hidden="true"><i class="bi bi-{{ $categoria->iconeBootstrap() }}"></i></span>
@@ -63,11 +63,10 @@
                     <span class="categoria-acao">Ver opções <i class="bi bi-arrow-up-right" aria-hidden="true"></i></span>
                 </a>
             </div>
-        @empty
-            <div class="col-12">
-                <p class="categorias-vazias">Novas categorias e benefícios estarão disponíveis em breve.</p>
-            </div>
-        @endforelse
+        @endforeach
+        <div class="col-12 {{ $categoriasVaziasVisibilidade }}">
+            <p class="categorias-vazias">Novas categorias e benefícios estarão disponíveis em breve.</p>
+        </div>
     </div>
 </section>
 <section class="blocos" id="beneficios">

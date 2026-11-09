@@ -83,6 +83,14 @@ class ProdutoCatalogoTest extends TestCase
             ->assertSee('Batata frita');
     }
 
+    public function test_product_form_keeps_default_checkbox_states(): void
+    {
+        $this->get(route('produtos.create'))
+            ->assertOk()
+            ->assertSee('id="destaque" value="1" checked', false)
+            ->assertSee('id="disponivel" value="1" checked', false);
+    }
+
     public function test_coupon_codes_are_hidden_from_guests(): void
     {
         $this->get(route('produtos.index', ['aba' => 'cupons']))

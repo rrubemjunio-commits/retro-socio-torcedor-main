@@ -20,15 +20,12 @@
     <button class="hamburguer" type="button" data-bs-toggle="collapse" data-bs-target="#menu-principal" aria-expanded="false" aria-controls="menu-principal" aria-label="Mostrar ou ocultar menu principal"><i class="bi bi-list" aria-hidden="true"></i></button>
     <div class="links-topo">
         <a href="{{ route('socios.form') }}">Cadastro</a>
-        @guest
-            <a href="{{ route('login') }}">Login</a>
-        @else
-            <span class="usuario-logado">Olá, {{ auth()->user()->name }}</span>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button class="link-topo-botao" type="submit">Sair</button>
-            </form>
-        @endguest
+        <a class="{{ $navigationGuestClass }}" href="{{ route('login') }}">Login</a>
+        <span class="usuario-logado {{ $navigationAuthClass }}">Olá, {{ auth()->user()?->name }}</span>
+        <form class="{{ $navigationAuthClass }}" method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button class="link-topo-botao" type="submit">Sair</button>
+        </form>
         <a href="{{ route('socios.index') }}">Sócios cadastrados</a>
         <a href="{{ route('produtos.index') }}">Produtos e benefícios</a>
     </div>
@@ -43,9 +40,7 @@
         <a href="{{ route('produtos.index') }}"><i class="bi bi-trophy-fill" aria-hidden="true"></i> Produtos e benefícios</a>
     </aside>
     <main class="conteudo">
-        @if(session('sucesso'))
-            <div class="alert alert-success">{{ session('sucesso') }}</div>
-        @endif
+        <div class="alert alert-success {{ $successMessageClass }}">{{ session('sucesso') }}</div>
         @yield('conteudo')
     </main>
 </div>

@@ -1,16 +1,17 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SocioController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProdutoController;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\SocioController;
 use App\Models\Categoria;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $categorias = Categoria::orderBy('nome')->get();
+    $categoriasVaziasVisibilidade = $categorias->isEmpty() ? '' : 'd-none';
 
-    return view('home', compact('categorias'));
+    return view('home', compact('categorias', 'categoriasVaziasVisibilidade'));
 })->name('home');
 
 Route::view('/jogos', 'jogos.index')->name('jogos.index');

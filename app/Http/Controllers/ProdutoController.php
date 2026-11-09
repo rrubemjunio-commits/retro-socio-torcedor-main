@@ -19,6 +19,18 @@ class ProdutoController extends Controller
         $abaSelecionada = $dados['aba'] ?? 'consumo';
         $categoriaSelecionada = $dados['categoria'] ?? null;
         $categorias = Categoria::orderBy('nome')->get();
+        $categoriaTodosActiveClass = $categoriaSelecionada === null ? 'active' : '';
+        $filtrosCategoriasClass = $categorias->isNotEmpty() ? '' : 'd-none';
+        $categorias->each(function (Categoria $categoria) use ($categoriaSelecionada): void {
+            $categoria->setAttribute(
+                'activeClass',
+                (int) $categoriaSelecionada === $categoria->id ? 'active' : ''
+            );
+            $categoria->setAttribute(
+                'ariaCurrent',
+                (int) $categoriaSelecionada === $categoria->id ? 'page' : 'false'
+            );
+        });
         $consulta = Produto::with('categoria')
             ->where('disponivel', true)
             ->orderByDesc('destaque')
@@ -29,9 +41,41 @@ class ProdutoController extends Controller
         }
 
         $produtos = $consulta->get();
+        $produtos->each(function (Produto $produto): void {
+            $produto->setAttribute('imagemUrl', $produto->imagem ? asset($produto->imagem) : '');
+            $produto->setAttribute('imagemVisibilidade', $produto->imagem ? '' : 'd-none');
+            $produto->setAttribute(
+                'placeholderVisibilidade',
+                $produto->imagem ? 'd-none' : ''
+            );
+            $produto->setAttribute(
+                'categoriaVisibilidade',
+                $produto->categoria ? '' : 'd-none'
+            );
+            $produto->setAttribute('categoriaNome', $produto->categoria?->nome ?? '');
+            $produto->setAttribute('iconeCategoria', $produto->categoria?->iconeBootstrap() ?? 'bag');
+            $produto->setAttribute(
+                'destaqueVisibilidade',
+                $produto->destaque ? '' : 'd-none'
+            );
+            $produto->setAttribute(
+                'descricaoVisibilidade',
+                $produto->descricao ? '' : 'd-none'
+            );
+        });
         $socioAutenticado = auth()->check()
             && Socio::where('email', auth()->user()->email)->exists();
-        $cupons = [
+        $consumoVisibilidade = $abaSelecionada === 'consumo' ? '' : 'd-none';
+        $cuponsVisibilidade = $abaSelecionada === 'cupons' ? '' : 'd-none';
+        $cuponsSocioVisibilidade = $socioAutenticado ? '' : 'd-none';
+        $cuponsVisitanteVisibilidade = $socioAutenticado ? 'd-none' : '';
+        $loginLinkVisibilidade = auth()->guest() ? '' : 'd-none';
+        $produtosVaziosVisibilidade = $produtos->isEmpty() ? '' : 'd-none';
+        $classeAbaConsumo = $abaSelecionada === 'consumo' ? 'active' : '';
+        $ariaAbaConsumo = $abaSelecionada === 'consumo' ? 'page' : 'false';
+        $classeAbaCupons = $abaSelecionada === 'cupons' ? 'active' : '';
+        $ariaAbaCupons = $abaSelecionada === 'cupons' ? 'page' : 'false';
+        $cupons = $socioAutenticado ? [
             [
                 'titulo' => 'Bebida gelada',
                 'descricao' => 'Pra refrescar a torcida.',
@@ -46,7 +90,7 @@ class ProdutoController extends Controller
                 'codigo' => 'COMBO8',
                 'validade' => 'Até acabar!',
             ],
-        ];
+        ] : [];
 
         return view('produtos.index', compact(
             'produtos',
@@ -54,15 +98,39 @@ class ProdutoController extends Controller
             'categoriaSelecionada',
             'abaSelecionada',
             'socioAutenticado',
-            'cupons'
+            'cupons',
+            'filtrosCategoriasClass',
+            'consumoVisibilidade',
+            'cuponsVisibilidade',
+            'cuponsSocioVisibilidade',
+            'cuponsVisitanteVisibilidade',
+            'loginLinkVisibilidade',
+            'produtosVaziosVisibilidade',
+            'categoriaTodosActiveClass',
+            'classeAbaConsumo',
+            'ariaAbaConsumo',
+            'classeAbaCupons',
+            'ariaAbaCupons'
         ));
     }
 
     public function create()
     {
         $categorias = Categoria::orderBy('nome')->get();
+        $categorias->each(function (Categoria $categoria): void {
+            $categoria->setAttribute(
+                'selectedAttribute',
+                old('categoria_id') == $categoria->id ? 'selected' : ''
+            );
+        });
+        $destaqueCheckedAttribute = old('destaque', true) ? 'checked' : '';
+        $disponivelCheckedAttribute = old('disponivel', true) ? 'checked' : '';
 
-        return view('produtos.create', compact('categorias'));
+        return view('produtos.create', compact(
+            'categorias',
+            'destaqueCheckedAttribute',
+            'disponivelCheckedAttribute'
+        ));
     }
 
     public function store(Request $request)

@@ -6,9 +6,9 @@
     <h1>Cadastrar categoria</h1>
     <p>Use categorias para separar os produtos e benefícios do Retrô FC.</p>
 
-    @if($errors->any())
-        <div class="alert alert-danger"><ul class="mb-0">@foreach($errors->all() as $erro)<li>{{ $erro }}</li>@endforeach</ul></div>
-    @endif
+    <div class="alert alert-danger {{ $validationAlertsClass }}">
+        <ul class="mb-0">@foreach($errors->all() as $erro)<li>{{ $erro }}</li>@endforeach</ul>
+    </div>
 
     <form method="POST" action="{{ route('categorias.store') }}">
         @csrf
@@ -20,8 +20,8 @@
             <label for="icone" class="form-label">Ícone (opcional)</label>
             <select id="icone" name="icone" class="form-select">
                 <option value="">Ícone padrão</option>
-                @foreach(\App\Models\Categoria::iconesBootstrap() as $nome => $rotulo)
-                    <option value="{{ $nome }}" @selected(old('icone') === $nome)>{{ $rotulo }}</option>
+                @foreach($icones as $icone)
+                    <option value="{{ $icone['nome'] }}" {{ $icone['selectedAttribute'] }}>{{ $icone['rotulo'] }}</option>
                 @endforeach
             </select>
             <small class="text-muted">Escolha um ícone Bootstrap para representar a categoria.</small>

@@ -19,15 +19,14 @@
                 <tr><th>Ícone</th><th>Nome</th><th>Produtos vinculados</th></tr>
             </thead>
             <tbody>
-                @forelse($categorias as $categoria)
+                @foreach($categorias as $categoria)
                     <tr>
                         <td><i class="bi bi-{{ $categoria->iconeBootstrap() }}" aria-hidden="true"></i></td>
                         <td>{{ $categoria->nome }}</td>
                         <td>{{ $categoria->produtos_count }}</td>
                     </tr>
-                @empty
-                    <tr><td colspan="3" class="text-center py-4">Nenhuma categoria cadastrada ainda.</td></tr>
-                @endforelse
+                @endforeach
+                <tr class="{{ $categoriasVaziasVisibilidade }}"><td colspan="3" class="text-center py-4">Nenhuma categoria cadastrada ainda.</td></tr>
             </tbody>
         </table>
     </div>

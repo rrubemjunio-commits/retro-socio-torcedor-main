@@ -11,13 +11,22 @@ class CategoriaController extends Controller
     public function index()
     {
         $categorias = Categoria::withCount('produtos')->orderBy('nome')->get();
+        $categoriasVaziasVisibilidade = $categorias->isEmpty() ? '' : 'd-none';
 
-        return view('categorias.index', compact('categorias'));
+        return view('categorias.index', compact('categorias', 'categoriasVaziasVisibilidade'));
     }
 
     public function create()
     {
-        return view('categorias.create');
+        $icones = collect(Categoria::iconesBootstrap())
+            ->map(fn (string $rotulo, string $nome): array => [
+                'nome' => $nome,
+                'rotulo' => $rotulo,
+                'selectedAttribute' => old('icone') === $nome ? 'selected' : '',
+            ])
+            ->all();
+
+        return view('categorias.create', compact('icones'));
     }
 
     public function store(Request $request)

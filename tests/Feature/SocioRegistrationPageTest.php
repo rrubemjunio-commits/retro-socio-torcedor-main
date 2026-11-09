@@ -23,21 +23,29 @@ class SocioRegistrationPageTest extends TestCase
             ->assertSee('value="Prata" selected', false);
     }
 
+    public function test_category_form_renders_icon_options(): void
+    {
+        $this->get(route('categorias.create'))
+            ->assertOk()
+            ->assertSee('Ícone padrão')
+            ->assertSee('value="bag"', false);
+    }
+
     public function test_top_navigation_registration_link_opens_the_registration_form(): void
     {
         $this->get(route('socios.create'))
             ->assertOk()
-            ->assertSee('href="' . route('socios.form') . '"', false);
+            ->assertSee('href="'.route('socios.form').'"', false);
     }
 
     public function test_homepage_shows_sidebar_links_without_games_and_tickets_top_shortcuts(): void
     {
         $this->get(route('home'))
             ->assertOk()
-            ->assertSee('href="' . route('jogos.index') . '"', false)
-            ->assertSee('href="' . route('ingressos.index') . '"', false)
-            ->assertDontSee('href="' . route('home') . '#jogos"', false)
-            ->assertDontSee('href="' . route('home') . '#ingressos"', false)
+            ->assertSee('href="'.route('jogos.index').'"', false)
+            ->assertSee('href="'.route('ingressos.index').'"', false)
+            ->assertDontSee('href="'.route('home').'#jogos"', false)
+            ->assertDontSee('href="'.route('home').'#ingressos"', false)
             ->assertSee('images/retro-futebol-clube-2023-logo-png_seeklogo-466412-removebg-preview.png', false);
     }
 
@@ -46,12 +54,12 @@ class SocioRegistrationPageTest extends TestCase
         $this->get(route('jogos.index'))
             ->assertOk()
             ->assertSee('Jogos')
-            ->assertSee('href="' . route('jogos.index') . '"', false);
+            ->assertSee('href="'.route('jogos.index').'"', false);
 
         $this->get(route('ingressos.index'))
             ->assertOk()
             ->assertSee('Ingressos')
-            ->assertSee('href="' . route('ingressos.index') . '"', false);
+            ->assertSee('href="'.route('ingressos.index').'"', false);
     }
 
     public function test_tickets_page_shows_two_fictional_matches_and_prices_without_seat_maps(): void

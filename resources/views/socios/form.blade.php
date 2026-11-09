@@ -7,11 +7,9 @@
     <h1>Faça seu cadastro</h1>
     <p>Preencha seus dados para fazer parte da torcida Retrô FC.</p>
     <p class="planos-aviso">Os valores e benefícios dos planos são sugestões ilustrativas.</p>
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">@foreach($errors->all() as $erro)<li>{{ $erro }}</li>@endforeach</ul>
-        </div>
-    @endif
+    <div class="alert alert-danger {{ $validationAlertsClass }}">
+        <ul class="mb-0">@foreach($errors->all() as $erro)<li>{{ $erro }}</li>@endforeach</ul>
+    </div>
     <form method="POST" action="{{ route('socios.store') }}">
         @csrf
         <div class="row g-3">
@@ -39,8 +37,8 @@
                 <label for="plano" class="form-label">Plano mensal *</label>
                 <select id="plano" name="plano" class="form-select" required>
                     <option value="">Selecione seu plano</option>
-                    @foreach(['Bronze', 'Prata', 'Ouro'] as $plano)
-                        <option value="{{ $plano }}" @selected(old('plano', $planoSelecionado) === $plano)>{{ $plano }}</option>
+                    @foreach($opcoesPlano as $opcao)
+                        <option value="{{ $opcao['nome'] }}" {{ $opcao['selectedAttribute'] }}>{{ $opcao['nome'] }}</option>
                     @endforeach
                 </select>
             </div>

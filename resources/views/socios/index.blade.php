@@ -10,14 +10,13 @@
         <table class="table table-striped align-middle">
             <thead><tr><th>Nome</th><th>CPF</th><th>Telefone</th><th>E-mail</th><th>Nascimento</th><th>Plano</th></tr></thead>
             <tbody>
-            @forelse($socios as $socio)
+            @foreach($socios as $socio)
                 <tr>
                     <td>{{ $socio->nome }}</td><td>{{ $socio->cpf }}</td><td>{{ $socio->telefone }}</td>
                     <td>{{ $socio->email ?: '—' }}</td><td>{{ $socio->data_nascimento->format('d/m/Y') }}</td><td><span class="plano">{{ $socio->plano }}</span></td>
                 </tr>
-            @empty
-                <tr><td colspan="6" class="text-center py-4">Nenhum sócio cadastrado ainda.</td></tr>
-            @endforelse
+            @endforeach
+            <tr class="{{ $sociosVaziosVisibilidade }}"><td colspan="6" class="text-center py-4">Nenhum sócio cadastrado ainda.</td></tr>
             </tbody>
         </table>
     </div>

@@ -21,7 +21,17 @@ class SocioController extends Controller
             $planoSelecionado = null;
         }
 
-        return view('socios.form', compact('planoSelecionado'));
+        $opcoesPlano = array_map(
+            fn (string $plano): array => [
+                'nome' => $plano,
+                'selectedAttribute' => old('plano', $planoSelecionado) === $plano
+                    ? 'selected'
+                    : '',
+            ],
+            $planos
+        );
+
+        return view('socios.form', compact('opcoesPlano'));
     }
 
     public function store(Request $request)
@@ -51,6 +61,8 @@ class SocioController extends Controller
     public function index()
     {
         $socios = Socio::latest()->get();
-        return view('socios.index', compact('socios'));
+        $sociosVaziosVisibilidade = $socios->isEmpty() ? '' : 'd-none';
+
+        return view('socios.index', compact('socios', 'sociosVaziosVisibilidade'));
     }
 }

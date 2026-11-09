@@ -6,9 +6,9 @@
     <h1>Cadastrar produto ou benefício</h1>
     <p>Adicione itens, vantagens e produtos relacionados ao Retrô FC.</p>
 
-    @if($errors->any())
-        <div class="alert alert-danger"><ul class="mb-0">@foreach($errors->all() as $erro)<li>{{ $erro }}</li>@endforeach</ul></div>
-    @endif
+    <div class="alert alert-danger {{ $validationAlertsClass }}">
+        <ul class="mb-0">@foreach($errors->all() as $erro)<li>{{ $erro }}</li>@endforeach</ul>
+    </div>
 
     <form method="POST" action="{{ route('produtos.store') }}">
         @csrf
@@ -22,7 +22,7 @@
                 <select id="categoria_id" name="categoria_id" class="form-select">
                     <option value="">Sem categoria</option>
                     @foreach($categorias as $categoria)
-                        <option value="{{ $categoria->id }}" @selected(old('categoria_id') == $categoria->id)>{{ $categoria->nome }}</option>
+                        <option value="{{ $categoria->id }}" {{ $categoria->selectedAttribute }}>{{ $categoria->nome }}</option>
                     @endforeach
                 </select>
             </div>
@@ -40,13 +40,13 @@
             </div>
             <div class="col-md-6">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="destaque" id="destaque" value="1" @checked(old('destaque', true))>
+                    <input class="form-check-input" type="checkbox" name="destaque" id="destaque" value="1" {{ $destaqueCheckedAttribute }}>
                     <label class="form-check-label" for="destaque">Exibir como destaque</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="disponivel" id="disponivel" value="1" @checked(old('disponivel', true))>
+                    <input class="form-check-input" type="checkbox" name="disponivel" id="disponivel" value="1" {{ $disponivelCheckedAttribute }}>
                     <label class="form-check-label" for="disponivel">Produto disponível</label>
                 </div>
             </div>
