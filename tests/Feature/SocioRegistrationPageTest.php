@@ -19,6 +19,14 @@ class SocioRegistrationPageTest extends TestCase
     {
         $this->get(route('socios.form', ['plano' => 'Prata']))
             ->assertOk()
+            ->assertSee('Vem ser sócio-torcedor')
+            ->assertSee('Seus dados')
+            ->assertDontSee('A paixão que entra em campo com o time.')
+            ->assertDontSee('cadastro-lateral', false)
+            ->assertSee('Já é cadastrado?')
+            ->assertSee('Faça o login aqui')
+            ->assertSee('href="'.route('login').'"', false)
+            ->assertSee('R$ 39,90 / mês')
             ->assertSee('name="cpf"', false)
             ->assertSee('value="Prata" selected', false);
     }

@@ -36,6 +36,9 @@ class LoginTest extends TestCase
         $this->get(route('login'))
             ->assertOk()
             ->assertSee('Entrar na sua conta')
+            ->assertSee('Não tem login?')
+            ->assertSee('Faça cadastro de sócio-torcedor')
+            ->assertSee('href="'.route('socios.form').'"', false)
             ->assertSee(route('login.store'), false);
     }
 

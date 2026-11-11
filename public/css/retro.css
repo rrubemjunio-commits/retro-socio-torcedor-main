@@ -218,3 +218,61 @@ footer{background:#061633;color:#dce8ff;border-top:1px solid #e0ad3b66}
 .cadastro-socio{max-width:1000px}
 .login-formulario{color:#f5f7fc}
 @media(max-width:760px){.estrutura{background-attachment:scroll}.menu{border-right:0;border-bottom:1px solid #e0ad3b55}.links-topo{gap:10px}.links-topo a{color:#fff}.plano-card-topo{min-height:0}}
+
+.cadastro-pagina{width:100%;max-width:1180px;margin:0 auto;padding:10px 0 24px}
+.cadastro-voltar{margin:0 0 18px}
+.cadastro-cabecalho{margin:0 0 24px;text-align:center}
+.cadastro-cabecalho h1{margin:8px 0;font-size:clamp(30px,4vw,42px);font-weight:900;letter-spacing:-.7px;color:#fff}
+.cadastro-cabecalho>p{max-width:680px;margin:0 auto;color:#d1daea;font-size:16px;line-height:1.6}
+.cadastro-etapas{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:22px}
+.cadastro-etapa{display:inline-flex;align-items:center;gap:8px;color:#aab6cb;font-size:13px;font-weight:700}
+.cadastro-etapa b{display:grid;width:28px;height:28px;place-items:center;border:1px solid #7d8ba5;border-radius:50%;font-size:12px}
+.cadastro-etapa-ativa{color:#ffd36b}
+.cadastro-etapa-ativa b{color:#14213d;background:#f2b52e;border-color:#f2b52e}
+.cadastro-etapa-linha{width:48px;height:1px;background:#ffffff35}
+.cadastro-layout{display:grid;grid-template-columns:minmax(0,820px);justify-content:center}
+.cadastro-formulario.formulario{width:100%;max-width:none;margin:0;padding:clamp(22px,3vw,34px);border-radius:16px}
+.cadastro-formulario-topo{display:flex;align-items:center;gap:13px;margin-bottom:24px;padding-bottom:19px;border-bottom:1px solid #ffffff20}
+.cadastro-icone-secao{display:grid;width:46px;height:46px;flex-shrink:0;place-items:center;color:#14213d;background:#f2b52e;border-radius:13px;font-size:21px}
+.cadastro-formulario-topo h2{margin:0;color:#fff;font-size:21px;font-weight:800}
+.cadastro-formulario-topo p{margin:4px 0 0;color:#c3cee0;font-size:13px}
+.cadastro-formulario-topo p span,.cadastro-campo label span{color:#ffd36b}
+.cadastro-campos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 16px}
+.cadastro-campo{min-width:0}
+.cadastro-campo-largo{grid-column:1/-1}
+.cadastro-campo .form-label{margin-bottom:7px;color:#f2f5fb;font-size:13px}
+.cadastro-campo .form-control,.cadastro-campo .form-select{min-height:48px;border-radius:8px}
+.cadastro-campo small{display:block;margin-top:6px;color:#aab6cb;font-size:11px;line-height:1.45}
+.cadastro-campo .form-control::placeholder{color:#aab6cb}
+.cadastro-rodape-form{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:24px;padding-top:20px;border-top:1px solid #ffffff20}
+.cadastro-rodape-form p{display:flex;align-items:flex-start;gap:8px;margin:0;color:#c3cee0!important;font-size:12px;line-height:1.5}
+.cadastro-rodape-form p i{color:#ffd36b;font-size:16px}
+.cadastro-enviar{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:13px 18px;border-radius:8px}
+.cadastro-enviar:focus-visible,.cadastro-voltar:focus-visible{outline:3px solid #fff;outline-offset:3px}
+@media(max-width:600px){.cadastro-pagina{padding-top:4px}.cadastro-campos{grid-template-columns:minmax(0,1fr);gap:15px}.cadastro-campo-largo{grid-column:auto}.cadastro-rodape-form{align-items:stretch;flex-direction:column}.cadastro-enviar{width:100%}}
+
+.cadastro-login-link,.login-cadastro-link{margin:18px 0 0;padding-top:17px;border-top:1px solid #ffffff20;color:#c3cee0!important;font-size:13px;text-align:center}
+.cadastro-login-link a,.login-cadastro-link a{color:#ffd36b;font-weight:800;text-decoration:none}
+.cadastro-login-link a:hover,.login-cadastro-link a:hover{text-decoration:underline}
+.login-pagina{display:grid;min-height:calc(100vh - 220px);place-items:center;padding:clamp(10px,3vw,34px) 0}
+.login-cartao{display:grid;width:100%;max-width:980px;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);overflow:hidden;background:rgba(7,24,59,.94);border:1px solid #d5aa5270;border-radius:18px;box-shadow:0 18px 45px #02091880}
+.login-identidade{display:flex;flex-direction:column;justify-content:center;min-height:510px;padding:clamp(28px,5vw,52px);background:linear-gradient(155deg,rgba(17,45,94,.93),rgba(5,19,49,.97))}
+.login-escudo{display:grid;width:92px;height:92px;place-items:center;margin-bottom:28px;background:#ffffff10;border:1px solid #f2b52e75;border-radius:50%}
+.login-escudo img{width:66px;height:66px;object-fit:contain}
+.login-identidade h1{max-width:370px;margin:12px 0;color:#fff;font-size:clamp(29px,3.4vw,40px);font-weight:900;line-height:1.13}
+.login-identidade>p{max-width:340px;margin:0;color:#c3cee0;font-size:15px;line-height:1.65}
+.login-chamada-torcida{display:flex;align-items:center;gap:10px;margin-top:35px;padding-top:20px;border-top:1px solid #ffffff20;color:#ffd36b;font-size:13px;font-weight:700}
+.login-chamada-torcida i{font-size:20px}
+.login-formulario{align-self:center;width:100%;max-width:none;padding:clamp(28px,5vw,56px);color:#f5f7fc}
+.login-formulario-topo{margin-bottom:25px}
+.login-formulario-topo h2{margin:0 0 7px;color:#fff;font-size:25px;font-weight:850}
+.login-formulario-topo p{margin:0;color:#c3cee0;font-size:13px}
+.login-campo .form-label{margin-bottom:7px;color:#f2f5fb;font-size:13px}
+.login-input-icone{position:relative}
+.login-input-icone>i{position:absolute;z-index:1;top:50%;left:14px;color:#aab6cb;transform:translateY(-50%)}
+.login-input-icone .form-control{min-height:49px;padding-left:42px;border-radius:8px}
+.login-manter .form-check-input{background-color:#091a3d;border-color:#63718c}
+.login-manter .form-check-input:checked{background-color:#f2b52e;border-color:#f2b52e}
+.login-manter .form-check-label{color:#c3cee0;font-size:12px}
+.login-enviar{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:49px;border-radius:8px}
+@media(max-width:700px){.login-pagina{min-height:0}.login-cartao{max-width:520px;grid-template-columns:minmax(0,1fr)}.login-identidade{min-height:0;padding:27px}.login-escudo{width:68px;height:68px;margin-bottom:18px}.login-escudo img{width:49px;height:49px}.login-identidade h1{font-size:28px}.login-chamada-torcida{margin-top:20px;padding-top:14px}.login-formulario{padding:27px}}
