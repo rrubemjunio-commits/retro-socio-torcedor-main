@@ -15,23 +15,13 @@ class SocioController extends Controller
     public function form(Request $request)
     {
         $planos = ['Bronze', 'Prata', 'Ouro'];
-        $planoSelecionado = $request->query('plano');
+        $planoSelecionado = old('plano', $request->query('plano'));
 
-        if (! in_array($planoSelecionado, $planos, true)) {
+        if (! is_string($planoSelecionado) || ! in_array($planoSelecionado, $planos, true)) {
             $planoSelecionado = null;
         }
 
-        $opcoesPlano = array_map(
-            fn (string $plano): array => [
-                'nome' => $plano,
-                'selectedAttribute' => old('plano', $planoSelecionado) === $plano
-                    ? 'selected'
-                    : '',
-            ],
-            $planos
-        );
-
-        return view('socios.form', compact('opcoesPlano'));
+        return view('socios.form', compact('planoSelecionado'));
     }
 
     public function store(Request $request)

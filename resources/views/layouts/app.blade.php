@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/retro.css') }}">
     <link rel="stylesheet" href="{{ asset('css/produtos.css') }}">
+    @livewireStyles
 </head>
 <body>
 <header class="topo">
@@ -46,5 +47,6 @@
 </div>
 <footer>Retrô FC • Juntos somos mais fortes</footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+@livewireScripts
 </body>
 </html>

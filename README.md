@@ -6,6 +6,7 @@ Projeto Laravel para cadastro e consulta de sócios-torcedores do Retrô FC, com
 
 - Página inicial do programa de sócio-torcedor.
 - Cadastro de sócios com nome, CPF, telefone, e-mail, data de nascimento e plano.
+- Formulário de cadastro reativo com validação usando Livewire 3.
 - Listagem dos sócios cadastrados.
 - Cadastro e listagem de categorias.
 - Cadastro e catálogo de produtos/benefícios, com descrição, valor, imagem, destaque e disponibilidade.
