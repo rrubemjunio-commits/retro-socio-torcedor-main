@@ -14,13 +14,14 @@ class Socio extends Model
         'telefone',
         'email',
         'data_nascimento',
-        'plano',
+        'password',
     ];
 
     protected function casts(): array
     {
         return [
             'data_nascimento' => 'date',
+            'password' => 'hashed',
         ];
     }
 }

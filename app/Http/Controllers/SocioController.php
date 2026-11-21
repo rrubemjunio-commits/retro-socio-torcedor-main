@@ -9,38 +9,34 @@ class SocioController extends Controller
 {
     public function create()
     {
-        return view('socios.create');
+        return redirect()->route('socios.form');
     }
 
     public function form(Request $request)
     {
-        $planos = ['Bronze', 'Prata', 'Ouro'];
-        $planoSelecionado = old('plano', $request->query('plano'));
-
-        if (! is_string($planoSelecionado) || ! in_array($planoSelecionado, $planos, true)) {
-            $planoSelecionado = null;
-        }
-
-        return view('socios.form', compact('planoSelecionado'));
+        return view('socios.form');
     }
 
     public function store(Request $request)
     {
         $dados = $request->validate([
             'nome' => ['required', 'string', 'max:120'],
-            'cpf' => ['required', 'string', 'size:11', 'unique:socios,cpf'],
+            'cpf' => ['required', 'string', 'size:11', 'regex:/^[0-9]{11}$/', 'unique:socios,cpf'],
             'telefone' => ['required', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:150'],
             'data_nascimento' => ['required', 'date'],
-            'plano' => ['required', 'in:Bronze,Prata,Ouro'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [
             'nome.required' => 'Informe o nome completo.',
             'cpf.required' => 'Informe o CPF com 11 números, sem pontos ou traço.',
             'cpf.size' => 'O CPF deve ter exatamente 11 números, sem pontos ou traço.',
+            'cpf.regex' => 'O CPF deve ter exatamente 11 números, sem pontos ou traço.',
             'cpf.unique' => 'Este CPF já está cadastrado.',
             'telefone.required' => 'Informe o telefone.',
             'data_nascimento.required' => 'Informe a data de nascimento.',
-            'plano.required' => 'Escolha um plano.',
+            'password.required' => 'Informe uma senha.',
+            'password.min' => 'A senha deve ter pelo menos 8 caracteres.',
+            'password.confirmed' => 'A confirmação da senha não corresponde.',
         ]);
 
         Socio::create($dados);

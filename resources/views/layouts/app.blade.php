@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,13 +20,17 @@
 <nav class="barra">
     <button class="hamburguer" type="button" data-bs-toggle="collapse" data-bs-target="#menu-principal" aria-expanded="false" aria-controls="menu-principal" aria-label="Mostrar ou ocultar menu principal"><i class="bi bi-list" aria-hidden="true"></i></button>
     <div class="links-topo">
-        <a href="{{ route('socios.form') }}">Cadastro</a>
-        <a class="{{ $navigationGuestClass }}" href="{{ route('login') }}">Login</a>
-        <span class="usuario-logado {{ $navigationAuthClass }}">Olá, {{ auth()->user()?->name }}</span>
-        <form class="{{ $navigationAuthClass }}" method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button class="link-topo-botao" type="submit">Sair</button>
-        </form>
+        @guest
+            <a href="{{ route('socios.form') }}">Cadastro</a>
+            <a href="{{ route('login') }}">Login</a>
+        @endguest
+        @auth
+            <span class="usuario-logado">{{ auth()->user()->name }}</span>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button class="link-topo-botao" type="submit">Sair</button>
+            </form>
+        @endauth
         <a href="{{ route('socios.index') }}">Sócios cadastrados</a>
         <a href="{{ route('produtos.index') }}">Produtos e benefícios</a>
     </div>

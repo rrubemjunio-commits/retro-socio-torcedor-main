@@ -5,13 +5,22 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\SocioController;
 use App\Models\Categoria;
+use App\Models\Produto;
+use App\Models\Socio;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $categorias = Categoria::orderBy('nome')->get();
     $categoriasVaziasVisibilidade = $categorias->isEmpty() ? '' : 'd-none';
+    $beneficiosDisponiveis = Produto::where('disponivel', true)->count();
+    $sociosCadastrados = Socio::count();
 
-    return view('home', compact('categorias', 'categoriasVaziasVisibilidade'));
+    return view('home', compact(
+        'categorias',
+        'categoriasVaziasVisibilidade',
+        'beneficiosDisponiveis',
+        'sociosCadastrados'
+    ));
 })->name('home');
 
 Route::view('/jogos', 'jogos.index')->name('jogos.index');

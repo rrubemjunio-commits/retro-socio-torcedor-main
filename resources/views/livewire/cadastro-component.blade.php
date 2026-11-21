@@ -1,6 +1,6 @@
 <section class="cadastro-pagina" aria-labelledby="titulo-cadastro">
-    <a class="link-bloco cadastro-voltar" href="{{ route('socios.create') }}">
-        <i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar aos planos
+    <a class="link-bloco cadastro-voltar" href="{{ route('home') }}">
+    <i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar ao início
     </a>
 
     <header class="cadastro-cabecalho">
@@ -9,8 +9,6 @@
         <p>Seu apoio fortalece o clube. Preencha seus dados e escolha como quer viver essa paixão.</p>
         <div class="cadastro-etapas" aria-label="Etapas do cadastro">
             <span class="cadastro-etapa cadastro-etapa-ativa"><b>1</b> Seus dados</span>
-            <span class="cadastro-etapa-linha" aria-hidden="true"></span>
-            <span class="cadastro-etapa"><b>2</b> Seu plano</span>
         </div>
     </header>
 
@@ -24,48 +22,44 @@
                 </div>
             </div>
 
-            <div class="alert alert-danger {{ $errors->isNotEmpty() ? '' : 'd-none' }}" role="alert">
-                <strong>Confira os dados informados:</strong>
-                <ul class="mb-0 mt-2">@foreach($errors->all() as $erro)<li>{{ $erro }}</li>@endforeach</ul>
-            </div>
-
-            <form wire:submit="cadastrar">
-                @php
-                    $planos = ['Bronze', 'Prata', 'Ouro'];
-                    $precosPlano = ['Bronze' => 'R$ 19,90', 'Prata' => 'R$ 39,90', 'Ouro' => 'R$ 69,90'];
-                @endphp
+            <form wire:submit="cadastrar" novalidate>
                 <div class="cadastro-campos">
                     <div class="cadastro-campo cadastro-campo-largo">
                         <label for="nome" class="form-label">Nome completo <span aria-hidden="true">*</span></label>
-                        <input id="nome" name="nome" class="form-control" wire:model="nome" required maxlength="120" autocomplete="name" placeholder="Como está no seu documento">
+                        <input id="nome" name="nome" class="form-control @error('nome') is-invalid @enderror" wire:model="nome" required maxlength="120" autocomplete="name" placeholder="Como está no seu documento" aria-invalid="{{ $errors->has('nome') ? 'true' : 'false' }}" @error('nome') aria-describedby="erro-nome" @enderror>
+                        @error('nome')<div class="invalid-feedback d-block" id="erro-nome" role="alert">{{ $message }}</div>@enderror
                     </div>
                     <div class="cadastro-campo">
                         <label for="cpf" class="form-label">CPF <span aria-hidden="true">*</span></label>
-                        <input id="cpf" name="cpf" class="form-control" wire:model="cpf" required minlength="11" maxlength="11" inputmode="numeric" pattern="[0-9]{11}" autocomplete="off" placeholder="Somente os 11 números" aria-describedby="ajuda-cpf">
+                        <input id="cpf" name="cpf" class="form-control @error('cpf') is-invalid @enderror" wire:model="cpf" required minlength="11" maxlength="11" inputmode="numeric" pattern="[0-9]{11}" autocomplete="off" placeholder="Somente os 11 números" aria-describedby="ajuda-cpf @error('cpf') erro-cpf @enderror" aria-invalid="{{ $errors->has('cpf') ? 'true' : 'false' }}">
                         <small id="ajuda-cpf">Não use pontos ou traço.</small>
+                        @error('cpf')<div class="invalid-feedback d-block" id="erro-cpf" role="alert">{{ $message }}</div>@enderror
                     </div>
                     <div class="cadastro-campo">
                         <label for="telefone" class="form-label">Celular / telefone <span aria-hidden="true">*</span></label>
-                        <input id="telefone" type="tel" name="telefone" class="form-control" wire:model="telefone" required maxlength="20" autocomplete="tel" placeholder="(00) 00000-0000">
+                        <input id="telefone" type="tel" name="telefone" class="form-control @error('telefone') is-invalid @enderror" wire:model="telefone" required maxlength="20" autocomplete="tel" placeholder="(00) 00000-0000" aria-invalid="{{ $errors->has('telefone') ? 'true' : 'false' }}" @error('telefone') aria-describedby="erro-telefone" @enderror>
+                        @error('telefone')<div class="invalid-feedback d-block" id="erro-telefone" role="alert">{{ $message }}</div>@enderror
                     </div>
                     <div class="cadastro-campo">
                         <label for="email" class="form-label">E-mail</label>
-                        <input id="email" type="email" name="email" class="form-control" wire:model="email" maxlength="150" autocomplete="email" placeholder="voce@email.com">
+                        <input id="email" type="email" name="email" class="form-control @error('email') is-invalid @enderror" wire:model="email" maxlength="150" autocomplete="email" placeholder="voce@email.com" aria-invalid="{{ $errors->has('email') ? 'true' : 'false' }}" @error('email') aria-describedby="erro-email" @enderror>
+                        @error('email')<div class="invalid-feedback d-block" id="erro-email" role="alert">{{ $message }}</div>@enderror
                         <small>Opcional, mas ajuda a manter você por dentro.</small>
                     </div>
                     <div class="cadastro-campo">
                         <label for="data_nascimento" class="form-label">Data de nascimento <span aria-hidden="true">*</span></label>
-                        <input id="data_nascimento" type="date" name="data_nascimento" class="form-control" wire:model="data_nascimento" required autocomplete="bday">
+                        <input id="data_nascimento" type="date" name="data_nascimento" class="form-control @error('data_nascimento') is-invalid @enderror" wire:model="data_nascimento" required autocomplete="bday" aria-invalid="{{ $errors->has('data_nascimento') ? 'true' : 'false' }}" @error('data_nascimento') aria-describedby="erro-data-nascimento" @enderror>
+                        @error('data_nascimento')<div class="invalid-feedback d-block" id="erro-data-nascimento" role="alert">{{ $message }}</div>@enderror
                     </div>
-                    <div class="cadastro-campo cadastro-campo-largo">
-                        <label for="plano" class="form-label">Escolha seu plano <span aria-hidden="true">*</span></label>
-                        <select id="plano" name="plano" class="form-select" wire:model="plano" required>
-                            <option value="">Selecione o plano ideal para você</option>
-                            @foreach($planos as $opcao)
-                                <option value="{{ $opcao }}" {{ $plano === $opcao ? 'selected' : '' }}>{{ $opcao }} — {{ $precosPlano[$opcao] }} / mês</option>
-                            @endforeach
-                        </select>
-                        <small>Valores e benefícios são sugestões ilustrativas, sem cobrança real.</small>
+                    <div class="cadastro-campo">
+                        <label for="password" class="form-label">Senha <span aria-hidden="true">*</span></label>
+                        <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" wire:model="password" required minlength="8" autocomplete="new-password" placeholder="Crie uma senha" aria-invalid="{{ $errors->has('password') ? 'true' : 'false' }}" @error('password') aria-describedby="erro-password" @enderror>
+                        @error('password')<div class="invalid-feedback d-block" id="erro-password" role="alert">{{ $message }}</div>@enderror
+                        <small>Use pelo menos 8 caracteres.</small>
+                    </div>
+                    <div class="cadastro-campo">
+                        <label for="password_confirmation" class="form-label">Confirmar senha <span aria-hidden="true">*</span></label>
+                        <input id="password_confirmation" type="password" name="password_confirmation" class="form-control @error('password') is-invalid @enderror" wire:model="password_confirmation" required minlength="8" autocomplete="new-password" placeholder="Digite a senha novamente" aria-invalid="{{ $errors->has('password') ? 'true' : 'false' }}">
                     </div>
                 </div>
 

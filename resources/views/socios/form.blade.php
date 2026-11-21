@@ -1,5 +1,5 @@
 @extends('layouts.app')
 @section('titulo', 'Cadastro de sócio | Retrô FC')
 @section('conteudo')
-    @livewire('cadastro-component', ['planoInicial' => $planoSelecionado])
+    @livewire('cadastro-component')
 @endsection

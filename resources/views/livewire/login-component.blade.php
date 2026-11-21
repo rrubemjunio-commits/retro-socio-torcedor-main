@@ -19,26 +19,23 @@
                 <p>Informe seus dados de acesso para continuar.</p>
             </div>
 
-            <div class="alert alert-danger {{ $validationAlertsClass }}" role="alert">
-                <strong>Não foi possível entrar.</strong>
-                <ul class="mb-0 mt-2">@foreach($errors->all() as $erro)<li>{{ $erro }}</li>@endforeach</ul>
-            </div>
-
-            <form method="POST" action="{{ route('login.store') }}">
+            <form method="POST" action="{{ route('login.store') }}" novalidate>
                 @csrf
                 <div class="login-campo mb-3">
                     <label for="email" class="form-label">E-mail</label>
                     <div class="login-input-icone">
                         <i class="bi bi-envelope" aria-hidden="true"></i>
-                        <input id="email" type="email" name="email" class="form-control" value="{{ old('email') }}" required autocomplete="username" autofocus placeholder="voce@email.com">
+                        <input id="email" type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="username" autofocus placeholder="voce@email.com" aria-invalid="{{ $errors->has('email') ? 'true' : 'false' }}" @error('email') aria-describedby="erro-email" @enderror>
                     </div>
+                    @error('email')<div class="invalid-feedback d-block" id="erro-email" role="alert">{{ $message }}</div>@enderror
                 </div>
                 <div class="login-campo mb-3">
                     <label for="password" class="form-label">Senha</label>
                     <div class="login-input-icone">
                         <i class="bi bi-lock" aria-hidden="true"></i>
-                        <input id="password" type="password" name="password" class="form-control" required autocomplete="current-password" placeholder="Sua senha">
+                        <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" required autocomplete="current-password" placeholder="Sua senha" aria-invalid="{{ $errors->has('password') ? 'true' : 'false' }}" @error('password') aria-describedby="erro-password" @enderror>
                     </div>
+                    @error('password')<div class="invalid-feedback d-block" id="erro-password" role="alert">{{ $message }}</div>@enderror
                 </div>
                 <div class="form-check login-manter mb-4">
                     <input id="remember" type="checkbox" name="remember" value="1" class="form-check-input">

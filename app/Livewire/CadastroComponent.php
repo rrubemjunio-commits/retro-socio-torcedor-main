@@ -17,30 +17,30 @@ class CadastroComponent extends Component
 
     public ?string $data_nascimento = null;
 
-    public ?string $plano = null;
+    public ?string $password = null;
 
-    public function mount(?string $planoInicial = null): void
-    {
-        $this->plano = $planoInicial;
-    }
+    public ?string $password_confirmation = null;
 
     public function cadastrar()
     {
         $dados = $this->validate([
             'nome' => ['required', 'string', 'max:120'],
-            'cpf' => ['required', 'string', 'size:11', 'unique:socios,cpf'],
+            'cpf' => ['required', 'string', 'size:11', 'regex:/^[0-9]{11}$/', 'unique:socios,cpf'],
             'telefone' => ['required', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:150'],
             'data_nascimento' => ['required', 'date'],
-            'plano' => ['required', 'in:Bronze,Prata,Ouro'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [
             'nome.required' => 'Informe o nome completo.',
             'cpf.required' => 'Informe o CPF com 11 números, sem pontos ou traço.',
             'cpf.size' => 'O CPF deve ter exatamente 11 números, sem pontos ou traço.',
+            'cpf.regex' => 'O CPF deve ter exatamente 11 números, sem pontos ou traço.',
             'cpf.unique' => 'Este CPF já está cadastrado.',
             'telefone.required' => 'Informe o telefone.',
             'data_nascimento.required' => 'Informe a data de nascimento.',
-            'plano.required' => 'Escolha um plano.',
+            'password.required' => 'Informe uma senha.',
+            'password.min' => 'A senha deve ter pelo menos 8 caracteres.',
+            'password.confirmed' => 'A confirmação da senha não corresponde.',
         ]);
 
         Socio::create($dados);
