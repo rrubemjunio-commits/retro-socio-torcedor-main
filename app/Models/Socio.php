@@ -15,6 +15,7 @@ class Socio extends Model
         'email',
         'data_nascimento',
         'password',
+        'plano',
     ];
 
     protected function casts(): array

@@ -10,6 +10,24 @@ class CatalogSeeder extends Seeder
 {
     public function run(): void
     {
+        $categoriasExtras = [
+            ['Camisas e uniforme', 'shirt'],
+            ['Acessórios', 'bag'],
+            ['Memorabilia', 'collection'],
+            ['Experiências', 'ticket-perforated'],
+            ['Hospitalidade', 'star'],
+            ['Descontos parceiros', 'percent'],
+            ['Conteúdo exclusivo', 'camera-reels'],
+            ['Eventos da torcida', 'people'],
+        ];
+
+        foreach ($categoriasExtras as [$nome, $icone]) {
+            Categoria::firstOrCreate(
+                ['nome' => $nome],
+                ['icone' => $icone]
+            );
+        }
+
         $catalogo = [
             'Bebidas' => [
                 ['Água mineral', 'Água gelada para acompanhar a partida.', 5.00, true],

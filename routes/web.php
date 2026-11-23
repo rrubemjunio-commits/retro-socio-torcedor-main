@@ -62,6 +62,20 @@ Route::get('/cadastro', [SocioController::class, 'create'])->name('socios.create
 Route::get('/cadastro/novo', [SocioController::class, 'form'])->name('socios.form');
 Route::post('/cadastro', [SocioController::class, 'store'])->name('socios.store');
 Route::get('/socios', [SocioController::class, 'index'])->name('socios.index');
+Route::get('/pagamento/{plano}', function (string $plano) {
+    $planos = [
+        'Bronze' => 19.90,
+        'Prata' => 39.90,
+        'Ouro' => 69.90,
+    ];
+
+    abort_unless(array_key_exists($plano, $planos), 404);
+
+    return view('pagamento.index', [
+        'plano' => $plano,
+        'valor' => $planos[$plano],
+    ]);
+})->name('pagamento.show');
 
 // Catálogo de produtos e benefícios para a torcida.
 Route::get('/produtos', [ProdutoController::class, 'index'])->name('produtos.index');

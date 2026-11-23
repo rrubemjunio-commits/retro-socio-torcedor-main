@@ -26,6 +26,10 @@ class Categoria extends Model
             'star' => 'Destaque',
             'heart' => 'Coração',
             'collection' => 'Coleção',
+            'shirt' => 'Camisas e uniforme',
+            'percent' => 'Descontos',
+            'camera-reels' => 'Conteúdo audiovisual',
+            'people' => 'Eventos',
         ];
     }
 

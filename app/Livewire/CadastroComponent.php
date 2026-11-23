@@ -3,10 +3,14 @@
 namespace App\Livewire;
 
 use App\Models\Socio;
+use App\Models\User;
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 
 class CadastroComponent extends Component
 {
+    public ?string $plano = null;
+
     public ?string $nome = null;
 
     public ?string $cpf = null;
@@ -21,13 +25,21 @@ class CadastroComponent extends Component
 
     public ?string $password_confirmation = null;
 
+    public function mount(?string $plano = null)
+    {
+        $this->plano = in_array($plano, ['Bronze', 'Prata', 'Ouro'], true)
+            ? $plano
+            : null;
+    }
+
     public function cadastrar()
     {
         $dados = $this->validate([
+            'plano' => ['nullable', 'in:Bronze,Prata,Ouro'],
             'nome' => ['required', 'string', 'max:120'],
-            'cpf' => ['required', 'string', 'size:11', 'regex:/^[0-9]{11}$/', 'unique:socios,cpf'],
+            'cpf' => ['required', 'string', 'size:11', 'regex:/^[0-9]{11}$/', 'unique:users,cpf'],
             'telefone' => ['required', 'string', 'max:20'],
-            'email' => ['nullable', 'email', 'max:150'],
+            'email' => ['required', 'email', 'max:150', 'unique:users,email'],
             'data_nascimento' => ['required', 'date'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [
@@ -43,9 +55,38 @@ class CadastroComponent extends Component
             'password.confirmed' => 'A confirmação da senha não corresponde.',
         ]);
 
-        Socio::create($dados);
+        DB::transaction(function () use ($dados) {
+            $user = User::create([
+                'name' => $dados['nome'],
+                'email' => $dados['email'],
+                'password' => $dados['password'],
+                'cpf' => $dados['cpf'],
+                'telefone' => $dados['telefone'],
+                'data_nascimento' => $dados['data_nascimento'],
+                'plano' => $this->plano,
+                'ativo' => true,
+                'papel' => 'admin',
+            ]);
 
-        session()->flash('sucesso', 'Sócio cadastrado com sucesso!');
+            if ($this->plano) {
+                Socio::create([
+                    'nome' => $dados['nome'],
+                    'cpf' => $dados['cpf'],
+                    'telefone' => $dados['telefone'],
+                    'email' => $dados['email'],
+                    'data_nascimento' => $dados['data_nascimento'],
+                    'password' => $dados['password'],
+                    'plano' => $this->plano,
+                ]);
+            }
+        });
+
+        session()->flash(
+            'sucesso',
+            $this->plano
+                ? 'Cadastro e assinatura realizados com sucesso!'
+                : 'Cadastro realizado com sucesso!'
+        );
 
         return $this->redirectRoute('socios.index');
     }

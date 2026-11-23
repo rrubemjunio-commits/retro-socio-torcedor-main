@@ -24,6 +24,23 @@
 
             <form wire:submit="cadastrar" novalidate>
                 <div class="cadastro-campos">
+                    @if($plano)
+                        <div class="cadastro-campo cadastro-campo-largo">
+                            <label class="form-label">Plano escolhido</label>
+                            <div class="plano">{{ $plano }}</div>
+                        </div>
+                    @else
+                        <div class="cadastro-campo cadastro-campo-largo">
+                            <label for="plano" class="form-label">Escolha seu plano <span aria-hidden="true">*</span></label>
+                            <select id="plano" class="form-select @error('plano') is-invalid @enderror" wire:model="plano" required>
+                                <option value="">Selecione</option>
+                                <option value="Bronze">Bronze</option>
+                                <option value="Prata">Prata</option>
+                                <option value="Ouro">Ouro</option>
+                            </select>
+                            @error('plano')<div class="invalid-feedback d-block" role="alert">{{ $message }}</div>@enderror
+                        </div>
+                    @endif
                     <div class="cadastro-campo cadastro-campo-largo">
                         <label for="nome" class="form-label">Nome completo <span aria-hidden="true">*</span></label>
                         <input id="nome" name="nome" class="form-control @error('nome') is-invalid @enderror" wire:model="nome" required maxlength="120" autocomplete="name" placeholder="Como está no seu documento" aria-invalid="{{ $errors->has('nome') ? 'true' : 'false' }}" @error('nome') aria-describedby="erro-nome" @enderror>
@@ -41,10 +58,10 @@
                         @error('telefone')<div class="invalid-feedback d-block" id="erro-telefone" role="alert">{{ $message }}</div>@enderror
                     </div>
                     <div class="cadastro-campo">
-                        <label for="email" class="form-label">E-mail</label>
-                        <input id="email" type="email" name="email" class="form-control @error('email') is-invalid @enderror" wire:model="email" maxlength="150" autocomplete="email" placeholder="voce@email.com" aria-invalid="{{ $errors->has('email') ? 'true' : 'false' }}" @error('email') aria-describedby="erro-email" @enderror>
+                        <label for="email" class="form-label">E-mail <span aria-hidden="true">*</span></label>
+                        <input id="email" type="email" name="email" class="form-control @error('email') is-invalid @enderror" wire:model="email" required maxlength="150" autocomplete="email" placeholder="voce@email.com" aria-invalid="{{ $errors->has('email') ? 'true' : 'false' }}" @error('email') aria-describedby="erro-email" @enderror>
                         @error('email')<div class="invalid-feedback d-block" id="erro-email" role="alert">{{ $message }}</div>@enderror
-                        <small>Opcional, mas ajuda a manter você por dentro.</small>
+                        <small>Usado para acessar sua conta.</small>
                     </div>
                     <div class="cadastro-campo">
                         <label for="data_nascimento" class="form-label">Data de nascimento <span aria-hidden="true">*</span></label>

@@ -22,6 +22,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'cpf',
+        'telefone',
+        'data_nascimento',
+        'plano',
         'empresa_id',
         'papel',
         'ativo'
