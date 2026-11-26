@@ -5,7 +5,7 @@ Projeto Laravel para cadastro e consulta de sócios-torcedores do Retrô FC, com
 ## Funcionalidades
 
 - Página inicial do programa de sócio-torcedor.
-- Cadastro de sócios com nome, CPF, telefone, e-mail, data de nascimento e plano.
+- Cadastro de sócios com nome, CPF, telefone, e-mail e data de nascimento.
 - Formulário de cadastro reativo com validação usando Livewire 3.
 - Listagem dos sócios cadastrados.
 - Cadastro e listagem de categorias.
@@ -40,19 +40,18 @@ As tabelas `categorias` e `produtos` usam exclusão lógica (`deleted_at`). Os v
    php artisan key:generate
    ```
 
-3. Configure no `.env` os dados do banco que será utilizado. O exemplo do projeto está configurado para PostgreSQL (`DB_CONNECTION=pgsql`).
+3. Configure no `.env` os dados do banco que será utilizado. O exemplo do projeto está configurado para MySQL (`DB_CONNECTION=mysql`).
 
-4. Execute as migrations para criar as tabelas:
+4. Execute as migrations para criar as tabelas (somente na primeira configuração):
 
    ```bash
    php artisan migrate
    ```
 
-5. Em outro terminal, compile os arquivos de interface e inicie o servidor:
+5. Inicie o servidor Laravel e o Vite juntos:
 
    ```bash
-   npm run build
-   php artisan serve
+   npm run dev
    ```
 
 6. Acesse `http://127.0.0.1:8000`.
@@ -60,7 +59,8 @@ As tabelas `categorias` e `produtos` usam exclusão lógica (`deleted_at`). Os v
 ## Rotas principais
 
 - `/` — página inicial.
-- `/cadastro` — formulário de cadastro do sócio.
+- `/cadastro` — página com informações dos planos.
+- `/cadastro/novo` — formulário de cadastro do sócio.
 - `/socios` — relação de sócios cadastrados.
 - `/produtos` — catálogo de produtos e benefícios disponíveis.
 - `/produtos/cadastro` — formulário de cadastro de produto/benefício.
@@ -71,4 +71,6 @@ As tabelas `categorias` e `produtos` usam exclusão lógica (`deleted_at`). Os v
 
 ## Observação sobre `sistema.db`
 
-O arquivo `sistema.db` que acompanha os arquivos de referência contém somente uma tabela legada chamada `usuarios`; ele não contém registros de categorias ou produtos. Por isso, as novas tabelas e seus relacionamentos foram adicionados pelas migrations do Laravel, sem importar esse registro legado para o cadastro de sócios.
+O arquivo `sistema.db` que acompanha os arquivos de referência contém somente uma tabela legada chamada `usuarios`; ele não é o banco usado pelo cadastro atual. Neste workspace, o `.env` está configurado com SQLite em `database/database.sqlite`, e os cadastros são gravados na tabela `users` desse arquivo. Para consultar esses registros no HeidiSQL, abra uma sessão SQLite apontando para o caminho absoluto `database/database.sqlite` dentro do projeto e selecione a tabela `users`.
+
+Se preferir gravar em uma sessão MySQL/MariaDB do HeidiSQL, configure `DB_CONNECTION=mysql` e os dados dessa conexão no `.env`, instale/habilite o driver PDO MySQL no PHP e execute `php artisan migrate` uma vez nesse banco. Não use `sistema.db` para essa finalidade: ele é um banco legado separado.

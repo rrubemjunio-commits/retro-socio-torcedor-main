@@ -46,6 +46,51 @@
         </aside>
     </div>
 
+    <section class="dashboard-lista" aria-labelledby="titulo-ingressos">
+        <div class="dashboard-secao-titulo">
+            <div><span>INGRESSOS</span><h2 id="titulo-ingressos">Ingressos reservados</h2></div>
+            <span class="dashboard-contador">{{ $ingressos->sum('quantidade') }}</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped align-middle dashboard-tabela">
+                <thead>
+                    <tr>
+                        <th>Comprador</th>
+                        <th>Partida</th>
+                        <th>Data do jogo</th>
+                        <th>Local</th>
+                        <th>Tipo</th>
+                        <th>Quantidade</th>
+                        <th>Valor unitário</th>
+                        <th>Total</th>
+                        <th>Reservado em</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($ingressos as $ingresso)
+                        <tr>
+                            <td>
+                                <strong>{{ $ingresso->user?->name ?? 'Visitante' }}</strong>
+                                <small class="d-block text-white-50">{{ $ingresso->user?->email ?? 'Sem conta vinculada' }}</small>
+                            </td>
+                            <td><strong>Retrô FC × {{ $ingresso->adversario }}</strong></td>
+                            <td>{{ $ingresso->data_jogo->format('d/m/Y') }} às {{ $ingresso->horario }}</td>
+                            <td>{{ $ingresso->estadio }}</td>
+                            <td>{{ $ingresso->tipo === 'meia' ? 'Meia-entrada' : 'Inteira' }}</td>
+                            <td>{{ $ingresso->quantidade }}</td>
+                            <td>R$ {{ number_format((float) $ingresso->valor_unitario, 2, ',', '.') }}</td>
+                            <td><strong>R$ {{ number_format((float) $ingresso->valor_total, 2, ',', '.') }}</strong></td>
+                            <td>{{ $ingresso->created_at->format('d/m/Y H:i') }}</td>
+                        </tr>
+                    @endforeach
+                    @if($ingressos->isEmpty())
+                        <tr><td colspan="9" class="text-center py-4">Nenhum ingresso reservado ainda.</td></tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </section>
+
     <section class="dashboard-lista" aria-labelledby="titulo-socios">
         <div class="dashboard-secao-titulo">
             <div><span>SÓCIOS TORCEDORES</span><h2 id="titulo-socios">Sócios cadastrados</h2></div>

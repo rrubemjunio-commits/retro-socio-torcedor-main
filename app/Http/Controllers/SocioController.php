@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
+use App\Models\ReservaIngresso;
 use App\Models\Socio;
 use App\Models\User;
-use App\Models\Categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,19 +16,14 @@ class SocioController extends Controller
         return view('socios.create');
     }
 
-    public function form(Request $request)
+    public function form()
     {
-        $plano = in_array($request->query('plano'), ['Bronze', 'Prata', 'Ouro'], true)
-            ? $request->query('plano')
-            : null;
-
-        return view('socios.form', compact('plano'));
+        return view('socios.form');
     }
 
     public function store(Request $request)
     {
         $dados = $request->validate([
-            'plano' => ['nullable', 'in:Bronze,Prata,Ouro'],
             'nome' => ['required', 'string', 'max:120'],
             'cpf' => ['required', 'string', 'size:11', 'regex:/^[0-9]{11}$/', 'unique:users,cpf'],
             'telefone' => ['required', 'string', 'max:20'],
@@ -55,22 +51,23 @@ class SocioController extends Controller
                 'cpf' => $dados['cpf'],
                 'telefone' => $dados['telefone'],
                 'data_nascimento' => $dados['data_nascimento'],
-                'plano' => $dados['plano'] ?? null,
+                'plano' => null,
                 'ativo' => true,
                 'papel' => 'admin',
             ]);
 
-            if (!empty($dados['plano'])) {
-                Socio::create($dados);
-            }
+            Socio::create([
+                'nome' => $dados['nome'],
+                'cpf' => $dados['cpf'],
+                'telefone' => $dados['telefone'],
+                'email' => $dados['email'],
+                'data_nascimento' => $dados['data_nascimento'],
+                'password' => $dados['password'],
+                'plano' => null,
+            ]);
         });
 
-        return redirect()->route('socios.index')->with(
-            'sucesso',
-            !empty($dados['plano'])
-                ? 'Cadastro e assinatura realizados com sucesso!'
-                : 'Cadastro realizado com sucesso!'
-        );
+        return redirect()->route('socios.index')->with('sucesso', 'Cadastro realizado com sucesso!');
     }
 
     public function index()
@@ -80,6 +77,7 @@ class SocioController extends Controller
         $usuarios = User::latest()->get();
         $usuariosVaziosVisibilidade = $usuarios->isEmpty() ? '' : 'd-none';
         $categorias = Categoria::withCount('produtos')->orderBy('nome')->get();
+        $ingressos = ReservaIngresso::with('user')->latest()->get();
 
         $metricas = [
             'usuarios' => $usuarios->count(),
@@ -95,6 +93,7 @@ class SocioController extends Controller
             'sociosVaziosVisibilidade',
             'usuarios',
             'usuariosVaziosVisibilidade',
+            'ingressos',
             'categorias',
             'metricas'
         ));

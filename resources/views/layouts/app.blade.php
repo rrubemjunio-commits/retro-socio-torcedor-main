@@ -31,8 +31,10 @@
                 <button class="link-topo-botao" type="submit">Sair</button>
             </form>
         @endauth
-        <a href="{{ route('socios.index') }}">Painel de controle</a>
-        <a href="{{ route('produtos.index') }}">Produtos e benefícios</a>
+        @auth
+            <a href="{{ route('socios.index') }}">Painel de controle</a>
+            <a href="{{ route('produtos.index') }}">Produtos e benefícios</a>
+        @endauth
     </div>
 </nav>
 <div class="estrutura @yield('classe-pagina')">
@@ -40,8 +42,10 @@
         <a href="{{ route('home') }}"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i> Painel Principal</a>
         <a href="{{ route('ingressos.index') }}"><i class="bi bi-ticket-perforated" aria-hidden="true"></i> Ingressos</a>
         <a href="{{ route('socios.create') }}"><i class="bi bi-person-plus-fill" aria-hidden="true"></i> Quero ser sócio</a>
-        <a href="{{ route('socios.index') }}"><i class="bi bi-speedometer2" aria-hidden="true"></i> Painel de controle</a>
-        <a href="{{ route('produtos.index') }}"><i class="bi bi-trophy-fill" aria-hidden="true"></i> Produtos e benefícios</a>
+        @auth
+            <a href="{{ route('socios.index') }}"><i class="bi bi-speedometer2" aria-hidden="true"></i> Painel de controle</a>
+            <a href="{{ route('produtos.index') }}"><i class="bi bi-trophy-fill" aria-hidden="true"></i> Produtos e benefícios</a>
+        @endauth
     </aside>
     <main class="conteudo">
         <div class="alert alert-success {{ $successMessageClass }}">{{ session('sucesso') }}</div>

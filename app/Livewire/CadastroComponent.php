@@ -4,13 +4,11 @@ namespace App\Livewire;
 
 use App\Models\Socio;
 use App\Models\User;
-use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+use Livewire\Component;
 
 class CadastroComponent extends Component
 {
-    public ?string $plano = null;
-
     public ?string $nome = null;
 
     public ?string $cpf = null;
@@ -25,17 +23,9 @@ class CadastroComponent extends Component
 
     public ?string $password_confirmation = null;
 
-    public function mount(?string $plano = null)
-    {
-        $this->plano = in_array($plano, ['Bronze', 'Prata', 'Ouro'], true)
-            ? $plano
-            : null;
-    }
-
     public function cadastrar()
     {
         $dados = $this->validate([
-            'plano' => ['nullable', 'in:Bronze,Prata,Ouro'],
             'nome' => ['required', 'string', 'max:120'],
             'cpf' => ['required', 'string', 'size:11', 'regex:/^[0-9]{11}$/', 'unique:users,cpf'],
             'telefone' => ['required', 'string', 'max:20'],
@@ -63,30 +53,23 @@ class CadastroComponent extends Component
                 'cpf' => $dados['cpf'],
                 'telefone' => $dados['telefone'],
                 'data_nascimento' => $dados['data_nascimento'],
-                'plano' => $this->plano,
+                'plano' => null,
                 'ativo' => true,
                 'papel' => 'admin',
             ]);
 
-            if ($this->plano) {
-                Socio::create([
-                    'nome' => $dados['nome'],
-                    'cpf' => $dados['cpf'],
-                    'telefone' => $dados['telefone'],
-                    'email' => $dados['email'],
-                    'data_nascimento' => $dados['data_nascimento'],
-                    'password' => $dados['password'],
-                    'plano' => $this->plano,
-                ]);
-            }
+            Socio::create([
+                'nome' => $dados['nome'],
+                'cpf' => $dados['cpf'],
+                'telefone' => $dados['telefone'],
+                'email' => $dados['email'],
+                'data_nascimento' => $dados['data_nascimento'],
+                'password' => $dados['password'],
+                'plano' => null,
+            ]);
         });
 
-        session()->flash(
-            'sucesso',
-            $this->plano
-                ? 'Cadastro e assinatura realizados com sucesso!'
-                : 'Cadastro realizado com sucesso!'
-        );
+        session()->flash('sucesso', 'Cadastro realizado com sucesso!');
 
         return $this->redirectRoute('socios.index');
     }
