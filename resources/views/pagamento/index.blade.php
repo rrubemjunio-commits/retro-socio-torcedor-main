@@ -7,11 +7,12 @@
         <span class="etiqueta">QUASE LÁ, TORCEDOR</span>
         <h1 id="titulo-checkout">Finalize sua assinatura</h1>
         <p>Escolha uma forma de pagamento para o seu plano Retrô FC.</p>
-        <span class="checkout-demo"><i class="bi bi-info-circle" aria-hidden="true"></i> Demonstração visual: nenhum pagamento será processado.</span>
+        <span class="checkout-demo"><i class="bi bi-info-circle" aria-hidden="true"></i> Simulação ilustrativa: nenhuma cobrança real será processada.</span>
     </header>
 
     <div class="checkout-grade">
-        <section class="checkout-formulario" aria-labelledby="titulo-pagamento">
+        <form class="checkout-formulario" method="POST" action="{{ route('pagamento.confirmar', ['plano' => $plano]) }}" aria-labelledby="titulo-pagamento">
+            @csrf
             <h2 id="titulo-pagamento">Forma de pagamento</h2>
             <div class="checkout-metodos" role="group" aria-label="Selecione a forma de pagamento">
                 <label class="checkout-metodo">
@@ -65,10 +66,12 @@
                 <small id="mensagem-cupom" aria-live="polite">Experimente o cupom demonstrativo RETRO10.</small>
             </div>
 
-            <p class="checkout-aviso" id="mensagem-checkout" role="status" hidden></p>
-            <button type="button" class="btn-amarelo checkout-confirmar" id="confirmar-pagamento">Simular assinatura</button>
+            @if($errors->any())
+                <p class="checkout-aviso" role="alert">{{ $errors->first() }}</p>
+            @endif
+            <button type="submit" class="btn-amarelo checkout-confirmar" id="confirmar-pagamento">Aprovar assinatura (simulação)</button>
             <p class="checkout-termos"><i class="bi bi-shield-check" aria-hidden="true"></i> Esta tela é apenas uma prévia. Não informe dados reais de pagamento.</p>
-        </section>
+        </form>
 
         <aside class="checkout-resumo" aria-labelledby="titulo-resumo">
             <span class="checkout-resumo-kicker">SEU PEDIDO</span>
@@ -80,7 +83,7 @@
             <div class="checkout-resumo-linha"><span>Mensalidade</span><strong id="subtotal" data-valor="{{ number_format($valor, 2, '.', '') }}">R$ {{ number_format($valor, 2, ',', '.') }}</strong></div>
             <div class="checkout-resumo-linha checkout-desconto" id="linha-desconto" hidden><span>Desconto RETRO10</span><strong id="valor-desconto">− R$ 0,00</strong></div>
             <div class="checkout-total"><span>Total mensal</span><strong id="total-mensal">R$ {{ number_format($valor, 2, ',', '.') }}</strong></div>
-            <p class="checkout-resumo-nota">O valor é ilustrativo e não será cobrado. A assinatura e os benefícios ainda não serão ativados.</p>
+            <p class="checkout-resumo-nota">O valor é ilustrativo, sem cobrança real. Ao aprovar a simulação, o plano e o selo VIP serão ativados.</p>
             <div class="checkout-resumo-seguranca"><i class="bi bi-shield-lock" aria-hidden="true"></i><span><strong>Seus dados protegidos</strong><small>Simulação sem integração com instituições financeiras.</small></span></div>
         </aside>
     </div>
@@ -127,13 +130,6 @@
         mensagemCupom.classList.remove('checkout-erro');
     });
 
-    document.getElementById('confirmar-pagamento').addEventListener('click', () => {
-        const metodo = document.querySelector('input[name="metodo"]:checked').value;
-        const mensagem = document.getElementById('mensagem-checkout');
-        const nomeMetodo = { cartao: 'cartão', pix: 'Pix', boleto: 'boleto' }[metodo];
-        mensagem.textContent = `Simulação concluída com ${nomeMetodo}${descontoAplicado ? ' e cupom de 10%' : ''}. Nenhum pagamento foi realizado.`;
-        mensagem.hidden = false;
-    });
 })();
 </script>
 @endsection

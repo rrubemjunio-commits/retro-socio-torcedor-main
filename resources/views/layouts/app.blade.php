@@ -25,7 +25,12 @@
             <a href="{{ route('login') }}">Login</a>
         @endguest
         @auth
-            <span class="usuario-logado">{{ auth()->user()->name }}</span>
+            <span class="usuario-logado">
+                {{ auth()->user()->name }}
+                @if(auth()->user()->plano)
+                    <span class="selo-vip" title="Sócio VIP"><i class="bi bi-patch-check-fill" aria-hidden="true"></i> VIP</span>
+                @endif
+            </span>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button class="link-topo-botao" type="submit">Sair</button>

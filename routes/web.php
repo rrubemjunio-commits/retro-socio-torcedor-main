@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\IngressoController;
+use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\SocioController;
 use App\Http\Middleware\RedirectGuestsToRegistration;
@@ -15,7 +16,7 @@ Route::get('/', function () {
     $categorias = Categoria::orderBy('nome')->get();
     $categoriasVaziasVisibilidade = $categorias->isEmpty() ? '' : 'd-none';
     $beneficiosDisponiveis = Produto::where('disponivel', true)->count();
-    $sociosCadastrados = Socio::count();
+    $sociosCadastrados = Socio::whereNotNull('plano')->count();
 
     return view('home', compact(
         'categorias',
@@ -45,20 +46,12 @@ Route::post('/logout', [LoginController::class, 'destroy'])
 Route::get('/cadastro', [SocioController::class, 'create'])->name('socios.create');
 Route::get('/cadastro/novo', [SocioController::class, 'form'])->name('socios.form');
 Route::post('/cadastro', [SocioController::class, 'store'])->name('socios.store');
-Route::get('/pagamento/{plano}', function (string $plano) {
-    $planos = [
-        'Bronze' => 19.90,
-        'Prata' => 39.90,
-        'Ouro' => 69.90,
-    ];
-
-    abort_unless(array_key_exists($plano, $planos), 404);
-
-    return view('pagamento.index', [
-        'plano' => $plano,
-        'valor' => $planos[$plano],
-    ]);
-})->middleware(RedirectGuestsToRegistration::class)->name('pagamento.show');
+Route::get('/pagamento/{plano}', [PagamentoController::class, 'show'])
+    ->middleware(RedirectGuestsToRegistration::class)
+    ->name('pagamento.show');
+Route::post('/pagamento/{plano}/confirmar', [PagamentoController::class, 'confirmar'])
+    ->middleware(RedirectGuestsToRegistration::class)
+    ->name('pagamento.confirmar');
 
 Route::middleware('auth')->group(function () {
     Route::get('/socios', [SocioController::class, 'index'])->name('socios.index');

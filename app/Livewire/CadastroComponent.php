@@ -2,9 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Models\Socio;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class CadastroComponent extends Component
@@ -45,33 +44,23 @@ class CadastroComponent extends Component
             'password.confirmed' => 'A confirmação da senha não corresponde.',
         ]);
 
-        DB::transaction(function () use ($dados) {
-            $user = User::create([
-                'name' => $dados['nome'],
-                'email' => $dados['email'],
-                'password' => $dados['password'],
-                'cpf' => $dados['cpf'],
-                'telefone' => $dados['telefone'],
-                'data_nascimento' => $dados['data_nascimento'],
-                'plano' => null,
-                'ativo' => true,
-                'papel' => 'admin',
-            ]);
+        $user = User::create([
+            'name' => $dados['nome'],
+            'email' => $dados['email'],
+            'password' => $dados['password'],
+            'cpf' => $dados['cpf'],
+            'telefone' => $dados['telefone'],
+            'data_nascimento' => $dados['data_nascimento'],
+            'plano' => null,
+            'ativo' => true,
+            'papel' => 'admin',
+        ]);
 
-            Socio::create([
-                'nome' => $dados['nome'],
-                'cpf' => $dados['cpf'],
-                'telefone' => $dados['telefone'],
-                'email' => $dados['email'],
-                'data_nascimento' => $dados['data_nascimento'],
-                'password' => $dados['password'],
-                'plano' => null,
-            ]);
-        });
+        Auth::login($user);
+        session()->regenerate();
+        session()->flash('sucesso', 'Conta criada! Escolha um plano e aprove a assinatura para se tornar sócio.');
 
-        session()->flash('sucesso', 'Cadastro realizado com sucesso!');
-
-        return $this->redirectRoute('socios.index');
+        return $this->redirectRoute('socios.create');
     }
 
     public function render()

@@ -7,7 +7,7 @@ use App\Models\ReservaIngresso;
 use App\Models\Socio;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class SocioController extends Controller
 {
@@ -43,36 +43,28 @@ class SocioController extends Controller
             'password.confirmed' => 'A confirmação da senha não corresponde.',
         ]);
 
-        DB::transaction(function () use ($dados) {
-            User::create([
-                'name' => $dados['nome'],
-                'email' => $dados['email'],
-                'password' => $dados['password'],
-                'cpf' => $dados['cpf'],
-                'telefone' => $dados['telefone'],
-                'data_nascimento' => $dados['data_nascimento'],
-                'plano' => null,
-                'ativo' => true,
-                'papel' => 'admin',
-            ]);
+        $usuario = User::create([
+            'name' => $dados['nome'],
+            'email' => $dados['email'],
+            'password' => $dados['password'],
+            'cpf' => $dados['cpf'],
+            'telefone' => $dados['telefone'],
+            'data_nascimento' => $dados['data_nascimento'],
+            'plano' => null,
+            'ativo' => true,
+            'papel' => 'admin',
+        ]);
 
-            Socio::create([
-                'nome' => $dados['nome'],
-                'cpf' => $dados['cpf'],
-                'telefone' => $dados['telefone'],
-                'email' => $dados['email'],
-                'data_nascimento' => $dados['data_nascimento'],
-                'password' => $dados['password'],
-                'plano' => null,
-            ]);
-        });
+        Auth::login($usuario);
+        $request->session()->regenerate();
 
-        return redirect()->route('socios.index')->with('sucesso', 'Cadastro realizado com sucesso!');
+        return redirect()->route('socios.create')
+            ->with('sucesso', 'Conta criada! Escolha um plano e aprove a assinatura para se tornar sócio.');
     }
 
     public function index()
     {
-        $socios = Socio::latest()->get();
+        $socios = Socio::whereNotNull('plano')->latest()->get();
         $sociosVaziosVisibilidade = $socios->isEmpty() ? '' : 'd-none';
         $usuarios = User::latest()->get();
         $usuariosVaziosVisibilidade = $usuarios->isEmpty() ? '' : 'd-none';

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Livewire\CadastroComponent;
+use App\Models\Socio;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Livewire\Livewire;
@@ -22,7 +23,7 @@ class ExampleTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_cadastro_sem_plano_cria_usuario_e_socio(): void
+    public function test_cadastro_sem_plano_cria_usuario_mas_nao_cria_socio(): void
     {
         $email = 'cadastro-sem-plano-'.uniqid().'@example.com';
 
@@ -36,9 +37,10 @@ class ExampleTest extends TestCase
             'password_confirmation' => 'Senha123!',
         ]);
 
-        $response->assertRedirect(route('socios.index'));
+        $response->assertRedirect(route('socios.create'));
+        $this->assertAuthenticated();
         $this->assertDatabaseHas('users', ['email' => $email]);
-        $this->assertDatabaseHas('socios', ['email' => $email, 'plano' => null]);
+        $this->assertDatabaseMissing('socios', ['email' => $email]);
     }
 
     public function test_formulario_de_cadastro_nao_exibe_selecao_de_plano(): void
@@ -49,7 +51,7 @@ class ExampleTest extends TestCase
             ->assertDontSee('wire:model="plano"', false);
     }
 
-    public function test_cadastro_pelo_formulario_livewire_cria_usuario_e_socio_sem_plano(): void
+    public function test_cadastro_pelo_formulario_livewire_cria_usuario_sem_criar_socio(): void
     {
         $email = 'cadastro-livewire-'.uniqid().'@example.com';
 
@@ -63,10 +65,10 @@ class ExampleTest extends TestCase
             ->set('password_confirmation', 'Senha123!')
             ->call('cadastrar')
             ->assertHasNoErrors()
-            ->assertRedirect(route('socios.index'));
+            ->assertRedirect(route('socios.create'));
 
         $this->assertDatabaseHas('users', ['email' => $email, 'plano' => null]);
-        $this->assertDatabaseHas('socios', ['email' => $email, 'plano' => null]);
+        $this->assertDatabaseMissing('socios', ['email' => $email]);
     }
 
     public function test_tela_demonstrativa_de_pagamento_exibe_opcoes_e_cupom(): void
@@ -79,11 +81,67 @@ class ExampleTest extends TestCase
             ->assertSee('Pix')
             ->assertSee('Boleto')
             ->assertSee('RETRO10')
-            ->assertSee('nenhum pagamento será processado');
+            ->assertSee('nenhuma cobrança real será processada')
+            ->assertSee('Aprovar assinatura (simulação)');
     }
 
     public function test_tela_demonstrativa_nao_aceita_plano_invalido(): void
     {
         $this->actingAs(User::factory()->create())->get('/pagamento/Platina')->assertNotFound();
+    }
+
+    public function test_aprovacao_simulada_cria_socio_ativa_plano_e_exibe_selo_vip(): void
+    {
+        $usuario = User::factory()->create([
+            'name' => 'Torcedor VIP',
+            'cpf' => '12345678901',
+            'telefone' => '81999990000',
+            'data_nascimento' => '1990-01-01',
+            'plano' => null,
+        ]);
+
+        $this->actingAs($usuario)
+            ->post(route('pagamento.confirmar', ['plano' => 'Ouro']), ['metodo' => 'pix'])
+            ->assertRedirect(route('socios.index'));
+
+        $this->assertDatabaseHas('users', ['id' => $usuario->id, 'plano' => 'Ouro']);
+        $this->assertDatabaseHas('socios', ['cpf' => '12345678901', 'plano' => 'Ouro']);
+        $this->assertSame(1, Socio::where('cpf', '12345678901')->count());
+
+        $this->get(route('socios.index'))->assertSee('Torcedor VIP')->assertSee('Ouro');
+        $this->get(route('home'))->assertSee('Sócio VIP')->assertSee('VIP');
+    }
+
+    public function test_socio_sem_plano_nao_aparece_na_lista_do_painel(): void
+    {
+        Socio::create([
+            'nome' => 'Cadastro pendente',
+            'cpf' => '12345678903',
+            'telefone' => '81999990002',
+            'data_nascimento' => '1990-01-01',
+            'plano' => null,
+        ]);
+
+        $this->actingAs(User::factory()->create())
+            ->get(route('socios.index'))
+            ->assertDontSee('Cadastro pendente')
+            ->assertSee('Nenhuma assinatura cadastrada ainda.');
+    }
+
+    public function test_aprovacao_com_metodo_invalido_nao_cria_socio(): void
+    {
+        $usuario = User::factory()->create([
+            'cpf' => '12345678902',
+            'telefone' => '81999990001',
+            'data_nascimento' => '1990-01-01',
+        ]);
+
+        $this->actingAs($usuario)
+            ->from(route('pagamento.show', ['plano' => 'Prata']))
+            ->post(route('pagamento.confirmar', ['plano' => 'Prata']), ['metodo' => 'desconhecido'])
+            ->assertSessionHasErrors('metodo');
+
+        $this->assertDatabaseMissing('socios', ['cpf' => '12345678902']);
+        $this->assertDatabaseHas('users', ['id' => $usuario->id, 'plano' => null]);
     }
 }
